@@ -27,7 +27,6 @@ $GLOBALS['page_subtitle'] = 'Jefatura de Educación y Capacitación';
         <div class="container">
             <div class="welcome-section">
                 <h1>Bienvenido al Sistema de Gestión de la ESyA</h1>
-                <p>Seleccione el área a la que desea acceder para comenzar a navegar a través del sistema.</p>
             </div>
 
             <div class="navigation-cards">
@@ -54,7 +53,6 @@ $GLOBALS['page_subtitle'] = 'Jefatura de Educación y Capacitación';
 
     <!-- Footer unificado - se adapta automáticamente al contexto de navegación -->
     <?php include 'includes/unified_footer.php'; ?>
-    <script src="./assets/js/inicio.js"></script>
 </body>
 
 </html>
