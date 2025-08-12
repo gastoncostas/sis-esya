@@ -28,9 +28,6 @@ if (class_exists('Auth')) {
 
         <div class="footer-bottom">
             <p>&copy; <?= $current_year ?> Policía de Tucumán - Escuela de Suboficiales y Agentes. Todos los derechos reservados.</p>
-            <?php if (!$is_system_page): ?>
-                <p>Jefatura de Educación y Capacitación - Formando el futuro de la seguridad</p>
-            <?php endif; ?>
         </div>
     </div>
 </footer>

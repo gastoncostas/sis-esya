@@ -435,47 +435,6 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
                 </div>
             <?php endif; ?>
         </div>
-
-        <?php if (isset($user['division_name'])): ?>
-            <div class="division-actions">
-                <h3>Acciones Rápidas - <?php echo htmlspecialchars($user['division_name']); ?></h3>
-                <p>Funciones específicas para tu división</p>
-                <div class="action-buttons">
-                    <a href="modules/aspirantes/" class="btn-outline">
-                        <i class="icon">👥</i> Gestionar Aspirantes
-                    </a>
-                    <a href="modules/asistencia/" class="btn-outline">
-                        <i class="icon">📋</i> Registrar Asistencia
-                    </a>
-                    <a href="modules/materias/" class="btn-outline">
-                        <i class="icon">📚</i> Ver Materias
-                    </a>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <!-- Información adicional del sistema -->
-        <div class="system-info" style="margin-top: 40px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-            <h3 style="color: #2c3e50; margin-bottom: 15px;">Información del Sistema</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                <div>
-                    <strong>Última conexión:</strong><br>
-                    <span style="color: #7f8c8d;"><?php echo date('d/m/Y H:i:s'); ?></span>
-                </div>
-                <div>
-                    <strong>Versión del sistema:</strong><br>
-                    <span style="color: #7f8c8d;">v2.0 - Agosto 2025</span>
-                </div>
-                <div>
-                    <strong>Estado del servidor:</strong><br>
-                    <span style="color: #27ae60;">🟢 Operativo</span>
-                </div>
-                <div>
-                    <strong>Base de datos:</strong><br>
-                    <span style="color: #7f8c8d;"><?php echo defined('DB_NAME') ? DB_NAME : 'MySQL'; ?></span>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Footer unificado - se adapta automáticamente al contexto del sistema -->

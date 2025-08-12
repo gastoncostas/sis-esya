@@ -31,18 +31,11 @@ $GLOBALS['page_subtitle'] = 'Jefatura de Educación y Capacitación';
 
             <div class="navigation-cards">
                 <div class="nav-card">
-                    <div class="card-icon">
-                        <i class="icon-education"></i>
-                    </div>
                     <h3>Formación de Agentes</h3>
                     <p>Acceso completo a la gestión académica de la Escuela de Suboficiales y Agentes.</p>
                     <a href="formacion_agentes.php" class="btn btn-primary btn-large">Ingresar al Sistema</a>
                 </div>
-
                 <div class="nav-card disabled">
-                    <div class="card-icon">
-                        <i class="icon-training"></i>
-                    </div>
                     <h3>División Capacitaciones</h3>
                     <p>Sistema avanzado de gestión de capacitaciones y cursos especializados para el desarrollo profesional continuo.</p>
                     <a href="#" class="btn btn-secondary btn-large" onclick="showComingSoon(); return false;">Próximamente</a>
