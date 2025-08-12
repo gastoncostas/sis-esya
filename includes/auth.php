@@ -2,6 +2,7 @@
 require_once 'database.php';
 
 class Auth {
+    
     private $db;
 
     public function __construct() {

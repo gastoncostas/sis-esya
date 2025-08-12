@@ -1,5 +1,12 @@
 <?php
 require_once 'includes/config.php';
+
+// Configuración específica para la página
+$page_title = APP_NAME . ' - Formación de Agentes';
+$breadcrumb = [
+    ['url' => 'inicio.php', 'text' => 'Inicio'],
+    ['text' => 'Formación de Agentes']
+];
 ?>
 
 <!DOCTYPE html>
@@ -8,53 +15,37 @@ require_once 'includes/config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo APP_NAME; ?> - Formación de Agentes</title>
+    <title><?= $page_title ?></title>
+    
+    <!-- Estilos unificados -->
     <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/unified_header_footer.css">
-    <link rel="stylesheet" href="assets/css/inicio.css">
+    <link rel="stylesheet" href="assets/css/unified_header_footer.css">
+    <link rel="stylesheet" href="assets/css/formacion_agentes.css">
 </head>
 
 <body>
-    <header class="main-header">
-        <div class="header-container">
-            <div class="logo-section">
-                <img src="assets/img/logo-policia.png" alt="Logo Policía de Tucumán" class="header-logo">
-                <div class="title-section">
-                    <h1>Policía de Tucumán</h1>
-                    <h2>Formación de Agentes</h2>
-                </div>
-            </div>
-            <nav class="breadcrumb">
-                <a href="inicio.php">Inicio</a> > Formación de Agentes
-            </nav>
-        </div>
-    </header>
+    <!-- Header unificado -->
+    <?php include 'includes/unified_header.php'; ?>
 
     <main class="main-content">
         <div class="container">
-            <div class="welcome-section">
+            <section class="welcome-section">
                 <h1>Formación de Agentes</h1>
                 <p>Seleccione el sistema al que desea acceder</p>
-            </div>
+            </section>
 
             <div class="navigation-cards">
-                <div class="nav-card">
-                    <div class="card-icon">
-                        <i class="icon-management"></i>
-                    </div>
+                <article class="nav-card">
                     <h3>Sistema de Gestión de la ESyA</h3>
                     <p>Gestión integral de la Escuela de Suboficiales y Agentes - Control de aspirantes, materias y asistencias</p>
                     <a href="esya.php" class="btn btn-primary btn-large">Acceder</a>
-                </div>
+                </article>
 
-                <div class="nav-card disabled">
-                    <div class="card-icon">
-                        <i class="icon-virtual"></i>
-                    </div>
+                <article class="nav-card disabled">
                     <h3>Aula Virtual</h3>
                     <p>Plataforma de educación a distancia y recursos digitales para la formación</p>
-                    <a href="#" class="btn btn-disabled btn-large" onclick="return false;">En Desarrollo</a>
-                </div>
+                    <a href="#" class="btn btn-secondary btn-large" id="developmentBtn">En Desarrollo</a>
+                </article>
             </div>
 
             <div class="back-section">
@@ -63,20 +54,11 @@ require_once 'includes/config.php';
         </div>
     </main>
 
+    <!-- Footer unificado -->
     <?php include 'includes/unified_footer.php'; ?>
 
-    <script>
-        // Efecto hover para las tarjetas activas
-        document.querySelectorAll('.nav-card:not(.disabled)').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    </script>
+    <!-- JavaScript -->
+    <script src="assets/js/formacion_agentes.js"></script>
 </body>
 
 </html>

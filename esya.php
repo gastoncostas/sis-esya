@@ -1,5 +1,39 @@
 <?php
 require_once 'includes/config.php';
+
+// Configuración específica para la página
+$page_title = APP_NAME . ' - Divisiones ESyA';
+$breadcrumb = [
+    ['url' => 'inicio.php', 'text' => 'Inicio'],
+    ['url' => 'formacion_agentes.php', 'text' => 'Formación de Agentes'],
+    ['text' => 'Sistema ESyA']
+];
+$divisions = [
+    [
+        'icon' => 'icon-command',
+        'title' => 'Jefatura de Cuerpo',
+        'description' => 'Gestión administrativa y operativa del cuerpo de cadetes',
+        'url' => 'login.php?division=jefatura_cuerpo'
+    ],
+    [
+        'icon' => 'icon-studies',
+        'title' => 'Jefatura de Estudios',
+        'description' => 'Coordinación académica y planes de estudio',
+        'url' => 'login.php?division=jefatura_estudios'
+    ],
+    [
+        'icon' => 'icon-medical',
+        'title' => 'Servicios Médicos',
+        'description' => 'Atención médica y seguimiento sanitario',
+        'url' => 'login.php?division=servicios_medicos'
+    ],
+    [
+        'icon' => 'icon-assistant',
+        'title' => 'Ayudantía',
+        'description' => 'Servicios de apoyo y asistencia administrativa',
+        'url' => 'login.php?division=ayudantia'
+    ]
+];
 ?>
 
 <!DOCTYPE html>
@@ -8,71 +42,36 @@ require_once 'includes/config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo APP_NAME; ?> - Divisiones ESyA</title>
+    <title><?= $page_title ?></title>
+    
+    <!-- Estilos unificados -->
     <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/unified_header_footer.css">
-    <link rel="stylesheet" href="assets/css/inicio.css">
+    <link rel="stylesheet" href="assets/css/unified_header_footer.css">
+    <link rel="stylesheet" href="assets/css/esya.css">
 </head>
 
 <body>
-    <header class="main-header">
-        <div class="header-container">
-            <div class="logo-section">
-                <img src="assets/img/logo-policia.png" alt="Logo Policía de Tucumán" class="header-logo">
-                <div class="title-section">
-                    <h1>Policía de Tucumán</h1>
-                    <h2>Escuela de Suboficiales y Agentes</h2>
-                </div>
-            </div>
-            <nav class="breadcrumb">
-                <a href="inicio.php">Inicio</a> > <a href="formacion_agentes.php">Formación de Agentes</a> > Sistema ESyA
-            </nav>
-        </div>
-    </header>
+    <!-- Header unificado -->
+    <?php include 'includes/unified_header.php'; ?>
 
     <main class="main-content">
         <div class="container">
-            <div class="welcome-section">
+            <section class="welcome-section">
                 <h1>Escuela de Suboficiales y Agentes</h1>
                 <p>Seleccione la división a la que desea acceder</p>
-            </div>
+            </section>
 
-            <div class="navigation-cards divisions-grid">
-                <div class="nav-card">
+            <div class="divisions-grid">
+                <?php foreach ($divisions as $division): ?>
+                <article class="division-card">
                     <div class="card-icon">
-                        <i class="icon-command"></i>
+                        <i class="<?= $division['icon'] ?>"></i>
                     </div>
-                    <h3>Jefatura de Cuerpo</h3>
-                    <p>Gestión administrativa y operativa del cuerpo de cadetes</p>
-                    <a href="login.php?division=jefatura_cuerpo" class="btn btn-primary btn-large">Acceder</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">
-                        <i class="icon-studies"></i>
-                    </div>
-                    <h3>Jefatura de Estudios</h3>
-                    <p>Coordinación académica y planes de estudio</p>
-                    <a href="login.php?division=jefatura_estudios" class="btn btn-primary btn-large">Acceder</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">
-                        <i class="icon-medical"></i>
-                    </div>
-                    <h3>Servicios Médicos</h3>
-                    <p>Atención médica y seguimiento sanitario</p>
-                    <a href="login.php?division=servicios_medicos" class="btn btn-primary btn-large">Acceder</a>
-                </div>
-
-                <div class="nav-card">
-                    <div class="card-icon">
-                        <i class="icon-assistant"></i>
-                    </div>
-                    <h3>Ayudantía</h3>
-                    <p>Servicios de apoyo y asistencia administrativa</p>
-                    <a href="login.php?division=ayudantia" class="btn btn-primary btn-large">Acceder</a>
-                </div>
+                    <h3><?= $division['title'] ?></h3>
+                    <p><?= $division['description'] ?></p>
+                    <a href="<?= $division['url'] ?>" class="btn btn-primary btn-large">Acceder</a>
+                </article>
+                <?php endforeach; ?>
             </div>
 
             <div class="back-section">
@@ -81,20 +80,11 @@ require_once 'includes/config.php';
         </div>
     </main>
 
+    <!-- Footer unificado -->
     <?php include 'includes/unified_footer.php'; ?>
 
-    <script>
-        // Efecto hover para las tarjetas
-        document.querySelectorAll('.nav-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    </script>
+    <!-- JavaScript -->
+    <script src="assets/js/esya.js"></script>
 </body>
 
 </html>
