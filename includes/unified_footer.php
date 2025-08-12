@@ -35,14 +35,6 @@ if ($is_system_page) {
                     <h3>Sistema ESyA</h3>
                     <p>Sistema integral de gestión para la Escuela de Suboficiales y Agentes de la Policía de Tucumán.</p>
                 </div>
-
-                <div class="footer-section">
-                    <h3>Información del Sistema</h3>
-                    <ul>
-                        <li>Versión: 1.0</li>
-                        <li>Estado: <span class="system-status"></span>Activo</li>
-                    </ul>
-                </div>
             </div>
         <?php else: ?>
             <!-- Footer simplificado para páginas de navegación -->
