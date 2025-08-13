@@ -4,7 +4,7 @@ require_once 'database.php';
 class Auth {
     
     private $db;
-    private $sessionTimeout = 1800; // 30 minutos
+    private $sessionTimeout = 900; // 15 minutos
 
     public function __construct() {
         $this->db = new Database();
@@ -51,7 +51,7 @@ class Auth {
         // Consulta actualizada para la estructura real de la BD
         $stmt = $conn->prepare("
             SELECT u.id, u.username, u.password, u.nombre_completo, u.rol, u.division_id, u.activo,
-                   d.nombre as division_name 
+                d.nombre as division_name 
             FROM usuarios u 
             LEFT JOIN divisiones d ON u.division_id = d.id 
             WHERE u.username = ? AND u.activo = 1
@@ -130,9 +130,9 @@ class Auth {
 
     public function isLoggedIn() {
         return isset($_SESSION['user_authenticated']) && 
-               $_SESSION['user_authenticated'] === true &&
-               isset($_SESSION['user_id']) &&
-               $this->checkSessionTimeout();
+                $_SESSION['user_authenticated'] === true &&
+                isset($_SESSION['user_id']) &&
+                $this->checkSessionTimeout();
     }
 
     public function getUserInfo() {

@@ -71,85 +71,6 @@ $result = $stmt->get_result();
     <title><?= APP_NAME ?> - Aspirantes</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/unified_header_footer.css">
-    <style>
-        /* Estilos adicionales para el módulo */
-        .stats-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-summary-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .stat-summary-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #3498db;
-        }
-
-        .stat-summary-label {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 30px 0;
-        }
-
-        .pagination a, .pagination span {
-            padding: 8px 12px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .pagination a:hover {
-            background: #f8f9fa;
-        }
-
-        .pagination .current {
-            background: #3498db;
-            color: white;
-            border-color: #3498db;
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        .status-activo {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-inactivo {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-graduado {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-    </style>
 </head>
 
 <body>
@@ -201,9 +122,9 @@ $result = $stmt->get_result();
         <div class="search-bar">
             <form method="GET" action="">
                 <input type="text" 
-                       name="search" 
-                       placeholder="Buscar por DNI, nombre o apellido" 
-                       value="<?= htmlspecialchars($search) ?>">
+                    name="search" 
+                    placeholder="Buscar por DNI, nombre o apellido" 
+                    value="<?= htmlspecialchars($search) ?>">
                 <button type="submit" class="btn btn-search">Buscar</button>
                 <?php if (!empty($search)): ?>
                     <a href="?" class="btn btn-cancel">Limpiar</a>
@@ -249,9 +170,9 @@ $result = $stmt->get_result();
                                 <a href="detalle.php?id=<?= $row['id'] ?>" class="btn btn-view">Ver</a>
                                 <a href="editar.php?id=<?= $row['id'] ?>" class="btn btn-edit">Editar</a>
                                 <a href="eliminar.php?id=<?= $row['id'] ?>" 
-                                   class="btn btn-delete" 
-                                   onclick="return confirm('¿Está seguro de eliminar este aspirante?')">
-                                   Eliminar
+                                class="btn btn-delete" 
+                                onclick="return confirm('¿Está seguro de eliminar este aspirante?')">
+                                Eliminar
                                 </a>
                             </td>
                         </tr>
@@ -339,9 +260,9 @@ $result = $stmt->get_result();
                     const nombre = row.cells[2].textContent;
                     
                     const confirmMessage = `¿Está seguro de eliminar al aspirante?\n\n` +
-                                         `DNI: ${dni}\n` +
-                                         `Nombre: ${nombre} ${apellido}\n\n` +
-                                         `Esta acción no se puede deshacer.`;
+                                            `DNI: ${dni}\n` +
+                                            `Nombre: ${nombre} ${apellido}\n\n` +
+                                            `Esta acción no se puede deshacer.`;
                     
                     if (confirm(confirmMessage)) {
                         window.location.href = this.href;
