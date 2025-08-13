@@ -1,109 +1,69 @@
 <?php
-// 1. Iniciar buffer de salida para evitar problemas con headers
-ob_start();
-
-// 2. Manejo de sesiones seguro - debe ser LO PRIMERO
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// 3. Limpieza de sesión previa
-$_SESSION = array(); // Vaciar array de sesión
-
-// 4. Destruir y reiniciar sesión de forma segura
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(
-        session_name(), 
-        '', 
-        time() - 42000,
-        $params["path"], 
-        $params["domain"],
-        $params["secure"], 
-        $params["httponly"]
-    );
-}
-
-session_destroy();
-
-// 5. Iniciar nueva sesión con ID regenerado
-session_start();
-session_regenerate_id(true);
-
-// 6. Ahora incluir configuraciones y dependencias
 require_once 'includes/config.php';
 require_once 'includes/auth.php';
 require_once 'includes/database.php';
 
 $auth = new Auth();
 
-// 7. Redirección segura si ya está autenticado
+// Si ya está logueado, redirigir al dashboard
 if ($auth->isLoggedIn()) {
-    if (!headers_sent()) {
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        echo '<script>window.location.href = "dashboard.php";</script>';
-        exit();
+    header("Location: dashboard.php");
+    exit();
+}
+
+$error = '';
+$division_info = null;
+
+// Verificar si viene de una división específica
+$division_param = $_GET['division'] ?? '';
+if (!empty($division_param)) {
+    $db = new Database();
+    $conn = $db->getConnection();
+    
+    // Mapear nombres de división
+    $division_map = [
+        'jefatura_cuerpo' => 'Jefatura de Cuerpo',
+        'jefatura_estudios' => 'Jefatura de Estudios',
+        'servicios_medicos' => 'Servicios Médicos',
+        'ayudantia' => 'Ayudantía'
+    ];
+    
+    if (isset($division_map[$division_param])) {
+        $division_info = [
+            'key' => $division_param,
+            'name' => $division_map[$division_param]
+        ];
     }
 }
 
-// 8. Obtener información de la división
-$division = filter_input(INPUT_GET, 'division', FILTER_SANITIZE_STRING) ?? '';
-$division_names = [
-    'jefatura_cuerpo' => 'Jefatura de Cuerpo',
-    'jefatura_estudios' => 'Jefatura de Estudios',
-    'servicios_medicos' => 'Servicios Médicos',
-    'ayudantia' => 'Ayudantía'
-];
-
-$division_title = $division_names[$division] ?? 'Sistema ESyA';
-
-// 9. Manejo de mensajes
-$error = '';
-$success = '';
-
-if (isset($_GET['logout'])) {
-    $success = 'Sesión cerrada correctamente';
-}
-
-// 10. Procesamiento del formulario
+// Procesar formulario de login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
-
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+    
     if (empty($username) || empty($password)) {
-        $error = "Usuario y contraseña son requeridos";
+        $error = 'Por favor complete todos los campos';
     } else {
         if ($auth->login($username, $password)) {
-            if (!empty($division)) {
-                $_SESSION['temp_auth']['division'] = $division;
-                $_SESSION['temp_auth']['division_name'] = $division_title;
-            }
-            
-            if (!headers_sent()) {
-                header("Location: dashboard.php");
-                exit();
-            } else {
-                echo '<script>window.location.href = "dashboard.php";</script>';
-                exit();
-            }
+            // Login exitoso - redirigir al dashboard
+            header("Location: dashboard.php");
+            exit();
         } else {
-            $error = "Credenciales incorrectas";
+            $error = 'Usuario o contraseña incorrectos';
         }
     }
 }
 
-// 11. Limpiar buffer antes de enviar HTML
-ob_end_clean();
+$page_title = 'Sistema ESyA - Iniciar Sesión';
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars(APP_NAME) ?> - Login</title>
+    <title><?= htmlspecialchars($page_title) ?></title>
     
     <!-- Estilos unificados -->
     <link rel="stylesheet" href="assets/css/style.css">
@@ -112,51 +72,56 @@ ob_end_clean();
 </head>
 
 <body>
-    <!-- Header unificado -->
+    <!-- Header unificado para navegación -->
     <?php include 'includes/unified_header.php'; ?>
 
     <div class="login-wrapper">
         <div class="login-container">
-            <?php if (!empty($division)): ?>
+            
+            <?php if ($division_info): ?>
                 <div class="division-info">
-                    <h3><?= htmlspecialchars($division_title) ?></h3>
-                    <p>Acceso al sistema de gestión</p>
+                    <h3><?= htmlspecialchars($division_info['name']) ?></h3>
+                    <p>Escuela de Suboficiales y Agentes</p>
                 </div>
             <?php endif; ?>
 
             <div class="login-header">
-                <h1><?= htmlspecialchars(APP_NAME) ?></h1>
-                <p>Sistema de Gestión Académica</p>
+                <h1>Iniciar Sesión</h1>
+                <p>Ingrese sus credenciales para acceder al sistema</p>
             </div>
 
             <?php if ($error): ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                <div class="alert alert-danger">
+                    <?= htmlspecialchars($error) ?>
+                </div>
             <?php endif; ?>
 
-            <?php if ($success): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-            <?php endif; ?>
-
-            <form method="POST" action="">
-                <?php if (!empty($division)): ?>
-                    <input type="hidden" name="division" value="<?= htmlspecialchars($division) ?>">
-                <?php endif; ?>
-
+            <form method="POST" class="login-form">
                 <div class="form-group">
-                    <label for="username">Usuario:</label>
-                    <input type="text" id="username" name="username" required autofocus>
+                    <label for="username">Usuario</label>
+                    <input type="text" 
+                            id="username" 
+                            name="username" 
+                            value="<?= htmlspecialchars($_POST['username'] ?? '') ?>"
+                            required 
+                            autofocus
+                            autocomplete="username">
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" required>
+                    <label for="password">Contraseña</label>
+                    <input type="password" 
+                            id="password" 
+                            name="password" 
+                            required
+                            autocomplete="current-password">
                 </div>
 
-                <button type="submit" class="btn">Ingresar</button>
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
             </form>
 
             <div class="back-link">
-                <?php if (!empty($division)): ?>
+                <?php if ($division_info): ?>
                     <a href="esya.php">← Volver a Divisiones</a>
                 <?php else: ?>
                     <a href="inicio.php">← Volver al Inicio</a>

@@ -2,13 +2,23 @@
 require_once 'includes/config.php';
 require_once 'includes/auth.php';
 
-// Destruir completamente la sesión
-session_start();
-$_SESSION = [];
-session_unset();
-session_destroy();
-setcookie(session_name(), '', time() - 3600, '/');
+// Crear instancia de autenticación
+$auth = new Auth();
 
-// Redirigir al login
-header("Location: login.php?logout=1");
+// Cerrar sesión
+$auth->logout();
+
+// Limpiar cualquier buffer de salida
+if (ob_get_level()) {
+    ob_end_clean();
+}
+
+// Prevenir caché
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Redirigir al inicio con mensaje
+header("Location: inicio.php?logout=success");
 exit();
+?>

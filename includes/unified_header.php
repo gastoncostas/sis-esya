@@ -14,6 +14,7 @@ if (class_exists('Auth')) {
         }
     } catch (Exception $e) {
         $is_logged_in = false;
+        error_log("Error en header auth: " . $e->getMessage());
     }
 }
 
@@ -44,6 +45,8 @@ if (isset($GLOBALS['breadcrumb_items']) && is_array($GLOBALS['breadcrumb_items']
 // Función para obtener las iniciales del usuario
 function getUserInitials($name)
 {
+    if (empty($name)) return 'U';
+    
     $words = explode(' ', trim($name));
     $initials = '';
     foreach ($words as $word) {
@@ -63,6 +66,17 @@ function isPageActive($page_path, $current_uri = null)
     }
     return strpos($current_uri, $page_path) !== false;
 }
+
+// Determinar base URL
+$base_url = '';
+if (defined('BASE_URL')) {
+    $base_url = BASE_URL;
+} else {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'];
+    $script_dir = dirname($_SERVER['SCRIPT_NAME']);
+    $base_url = $protocol . $host . $script_dir . '/';
+}
 ?>
 
 <?php if ($context === 'navigation'): ?>
@@ -70,19 +84,19 @@ function isPageActive($page_path, $current_uri = null)
     <header class="main-header">
         <div class="header-container">
             <div class="logo-section">
-                <img src="<?php echo defined('BASE_URL') ? BASE_URL : ''; ?>assets/img/logo-policia.png"
+                <img src="<?= $base_url ?>assets/img/logo-policia.png"
                     alt="Logo Policía de Tucumán"
                     class="header-logo"
                     onerror="this.style.display='none';">
                 <div class="title-section">
                     <h1>Policía de Tucumán</h1>
-                    <h2><?php echo isset($GLOBALS['page_subtitle']) ? htmlspecialchars($GLOBALS['page_subtitle']) : 'Jefatura de Educación y Capacitación'; ?></h2>
+                    <h2><?= isset($GLOBALS['page_subtitle']) ? htmlspecialchars($GLOBALS['page_subtitle']) : 'Jefatura de Educación y Capacitación' ?></h2>
                 </div>
             </div>
 
             <?php if (!empty($breadcrumb)): ?>
                 <nav class="breadcrumb">
-                    <?php echo $breadcrumb; ?>
+                    <?= $breadcrumb ?>
                 </nav>
             <?php endif; ?>
         </div>
@@ -93,71 +107,229 @@ function isPageActive($page_path, $current_uri = null)
     <header>
         <div class="header-container">
             <div class="logo">
-                <h2><?php echo defined('APP_NAME') ? APP_NAME : 'Sistema de Gestión de la ESyA'; ?></h2>
+                <h2><?= defined('APP_NAME') ? htmlspecialchars(APP_NAME) : 'Sistema de Gestión de la ESyA' ?></h2>
             </div>
 
             <nav>
                 <ul class="main-nav">
-                    <li class="<?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>">
-                        <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>dashboard.php">
+                    <li class="<?= ($current_page == 'dashboard.php') ? 'active' : '' ?>">
+                        <a href="<?= $base_url ?>dashboard.php">
                             <i class="icon">🏠</i> Inicio
                         </a>
                     </li>
-                    <li class="<?php echo isPageActive('aspirantes') ? 'active' : ''; ?>">
-                        <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>modules/aspirantes/">
+                    <li class="<?= isPageActive('aspirantes') ? 'active' : '' ?>">
+                        <a href="<?= $base_url ?>modules/aspirantes/">
                             <i class="icon">👥</i> Aspirantes
                         </a>
                     </li>
-                    <li class="<?php echo isPageActive('asistencia') ? 'active' : ''; ?>">
-                        <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>modules/asistencia/">
+                    <li class="<?= isPageActive('asistencia') ? 'active' : '' ?>">
+                        <a href="<?= $base_url ?>modules/asistencia/">
                             <i class="icon">📋</i> Asistencia
                         </a>
                     </li>
-                    <li class="<?php echo isPageActive('materias') ? 'active' : ''; ?>">
-                        <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>modules/materias/">
+                    <li class="<?= isPageActive('materias') ? 'active' : '' ?>">
+                        <a href="<?= $base_url ?>modules/materias/">
                             <i class="icon">📚</i> Materias
                         </a>
                     </li>
 
                     <?php if ($user && $user['rol'] === 'admin'): ?>
-                        <li class="<?php echo isPageActive('usuarios') ? 'active' : ''; ?>">
-                            <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>modules/usuarios/">
+                        <li class="<?= isPageActive('usuarios') ? 'active' : '' ?>">
+                            <a href="<?= $base_url ?>modules/usuarios/">
                                 <i class="icon">👤</i> Usuarios
                             </a>
                         </li>
                     <?php endif; ?>
+                </ul>
 
-                    <?php if ($user): ?>
-                        <div class="user-nav">
-                            <div class="user-profile">
-                                <div class="user-avatar">
-                                    <?php echo getUserInitials($user['nombre_completo']); ?>
-                                </div>
-                                <span class="user-name"><?php echo htmlspecialchars($user['nombre_completo']); ?></span>
-                                <div class="user-dropdown">
-                                    <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>perfil.php">
-                                        <i class="icon">⚙️</i> Mi Perfil
+                <?php if ($user): ?>
+                    <div class="user-nav">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <?= getUserInitials($user['nombre_completo']) ?>
+                            </div>
+                            <span class="user-name"><?= htmlspecialchars($user['nombre_completo']) ?></span>
+                            <div class="user-dropdown">
+                                <a href="<?= $base_url ?>perfil.php">
+                                    <i class="icon">⚙️</i> Mi Perfil
+                                </a>
+                                <?php if (!empty($user['division_name'])): ?>
+                                    <a href="#" onclick="return false;" style="opacity: 0.7;">
+                                        <i class="icon">🏢</i> <?= htmlspecialchars($user['division_name']) ?>
                                     </a>
-                                    <?php if (isset($user['division_name'])): ?>
-                                        <a href="#" onclick="return false;" style="opacity: 0.7;">
-                                            <i class="icon">🏢</i> <?php echo htmlspecialchars($user['division_name']); ?>
-                                        </a>
-                                    <?php endif; ?>
-                                    <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>logout.php">
-                                        <i class="icon">🚪</i> Cerrar Sesión
-                                    </a>
-                                </div>
+                                <?php endif; ?>
+                                <a href="<?= $base_url ?>logout.php">
+                                    <i class="icon">🚪</i> Cerrar Sesión
+                                </a>
                             </div>
                         </div>
-                    <?php endif; ?>
-                </ul>
+                    </div>
+                <?php endif; ?>
             </nav>
         </div>
     </header>
 <?php endif; ?>
 
 <style>
-    /* Iconos inline para el header */
+    /* Estilos base para el header */
+    .main-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        color: white;
+        padding: 20px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-logo {
+        height: 60px;
+        width: auto;
+    }
+
+    .title-section h1 {
+        font-size: 1.8rem;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .title-section h2 {
+        font-size: 1.1rem;
+        margin: 5px 0 0 0;
+        opacity: 0.9;
+        font-weight: 400;
+    }
+
+    .breadcrumb {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .breadcrumb a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+    /* Estilos para header del sistema */
+    header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 15px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-nav {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+    }
+
+    .main-nav li {
+        margin-left: 20px;
+    }
+
+    .main-nav li a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .main-nav li a:hover,
+    .main-nav li.active a {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Usuario dropdown */
+    .user-nav {
+        margin-left: 20px;
+        position: relative;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .user-profile:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        background: #3498db;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-right: 10px;
+    }
+
+    .user-name {
+        font-weight: 500;
+    }
+
+    .user-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: #2c3e50;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 5px;
+    }
+
+    .user-profile:hover .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown a {
+        display: block;
+        padding: 12px 16px;
+        color: white;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        border: none;
+    }
+
+    .user-dropdown a:hover {
+        background-color: #3498db;
+    }
+
+    /* Iconos inline */
     .icon {
         font-style: normal;
         margin-right: 8px;
@@ -165,37 +337,54 @@ function isPageActive($page_path, $current_uri = null)
         opacity: 0.8;
     }
 
-    /* Ajuste para rutas relativas en subdirectorios */
-    nav a[href*="modules/"],
-    nav a[href*="dashboard.php"],
-    nav a[href*="perfil.php"],
-    nav a[href*="logout.php"] {
-        color: white;
-        text-decoration: none;
-    }
-
-    /* Mejora visual para división del usuario */
-    .user-dropdown a[onclick="return false;"] {
-        background-color: rgba(52, 152, 219, 0.1);
-        border-left: 3px solid #3498db;
-        font-weight: 500;
-    }
-
-    /* Responsive para iconos */
+    /* Responsive */
     @media (max-width: 768px) {
-        .icon {
-            display: none;
+        .header-container {
+            flex-direction: column;
+            text-align: center;
+            gap: 15px;
+        }
+
+        .logo-section {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .title-section h1 {
+            font-size: 1.5rem;
+        }
+
+        .title-section h2 {
+            font-size: 1rem;
+        }
+
+        .main-nav {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .main-nav li {
+            margin: 0;
+        }
+
+        .user-nav {
+            margin: 10px 0 0 0;
         }
 
         .user-name {
             display: none;
         }
 
-        .user-avatar {
-            width: 30px;
-            height: 30px;
-            font-size: 0.8rem;
+        .icon {
+            display: none;
         }
+    }
+
+    /* División del usuario destacada */
+    .user-dropdown a[onclick="return false;"] {
+        background-color: rgba(52, 152, 219, 0.1);
+        border-left: 3px solid #3498db;
+        font-weight: 500;
     }
 </style>
 

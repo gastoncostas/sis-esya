@@ -1,0 +1,6 @@
+[13-Aug-2025 15:31:17 America/Argentina/Tucuman] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'esyabd.divisiones' doesn't exist in C:\xampp\htdocs\sis-esya\includes\auth.php:52
+Stack trace:
+#0 C:\xampp\htdocs\sis-esya\includes\auth.php(52): mysqli->prepare('\r\n            S...')
+#1 C:\xampp\htdocs\sis-esya\login.php(47): Auth->login('admin', 'admin1234')
+#2 {main}
+  thrown in C:\xampp\htdocs\sis-esya\includes\auth.php on line 52

@@ -4,34 +4,59 @@ require_once 'includes/auth.php';
 
 $auth = new Auth();
 
-if (!$auth->isLoggedIn()) {
-    header("Location: login.php");
-    exit();
-}
+// Requerir login
+$auth->requireLogin();
 
 $user = $auth->getUserInfo();
 $db = new Database();
 $conn = $db->getConnection();
 
-// Obtener estadísticas
+// Obtener estadísticas de forma segura
 $stats = [
     'aspirantes' => 0,
     'activos' => 0,
     'asistencias_hoy' => 0
 ];
 
-// Total aspirantes
-$result = $conn->query("SELECT COUNT(*) as total FROM aspirantes");
-$stats['aspirantes'] = $result->fetch_assoc()['total'];
+try {
+    // Total aspirantes
+    $stmt = $conn->prepare("SELECT COUNT(*) as total FROM aspirantes");
+    if ($stmt) {
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stats['aspirantes'] = (int)($row['total'] ?? 0);
+        $stmt->close();
+    }
 
-// Aspirantes activos
-$result = $conn->query("SELECT COUNT(*) as total FROM aspirantes WHERE estado = 'activo'");
-$stats['activos'] = $result->fetch_assoc()['total'];
+    // Aspirantes activos
+    $stmt = $conn->prepare("SELECT COUNT(*) as total FROM aspirantes WHERE estado = ?");
+    if ($stmt) {
+        $estado = 'activo';
+        $stmt->bind_param("s", $estado);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stats['activos'] = (int)($row['total'] ?? 0);
+        $stmt->close();
+    }
 
-// Asistencias hoy
-$today = date('Y-m-d');
-$result = $conn->query("SELECT COUNT(*) as total FROM asistencia WHERE fecha = '$today'");
-$stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
+    // Asistencias hoy
+    $today = date('Y-m-d');
+    $stmt = $conn->prepare("SELECT COUNT(*) as total FROM asistencia WHERE fecha = ?");
+    if ($stmt) {
+        $stmt->bind_param("s", $today);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stats['asistencias_hoy'] = (int)($row['total'] ?? 0);
+        $stmt->close();
+    }
+} catch (Exception $e) {
+    error_log("Error obteniendo estadísticas: " . $e->getMessage());
+}
+
+$page_title = APP_NAME . ' - Dashboard';
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +65,8 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo APP_NAME; ?> - Dashboard</title>
+    <title><?= htmlspecialchars($page_title) ?></title>
+    
     <!-- Estilos unificados -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/unified_header_footer.css">
@@ -180,22 +206,6 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
             overflow: hidden;
         }
 
-        .dashboard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(52, 152, 219, 0.03), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .dashboard-card:hover::before {
-            transform: translateX(100%);
-        }
-
         .dashboard-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
@@ -246,49 +256,6 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
             box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
         }
 
-        /* División actions */
-        .division-actions {
-            margin-top: 40px;
-            padding: 30px;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .division-actions h3 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #3498db;
-            color: #3498db;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-outline:hover {
-            background: #3498db;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
-        }
-
         /* Animaciones */
         @keyframes shimmer {
             0% {
@@ -314,8 +281,7 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
 
         .welcome-header,
         .stats-container,
-        .dashboard-cards,
-        .division-actions {
+        .dashboard-cards {
             animation: fadeInUp 0.6s ease-out;
         }
 
@@ -325,10 +291,6 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
 
         .dashboard-cards {
             animation-delay: 0.2s;
-        }
-
-        .division-actions {
-            animation-delay: 0.3s;
         }
 
         /* Responsive */
@@ -344,16 +306,6 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
             .dashboard-cards {
                 grid-template-columns: 1fr;
             }
-
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn-outline {
-                width: 100%;
-                max-width: 250px;
-            }
         }
     </style>
 </head>
@@ -364,33 +316,33 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
 
     <div class="container">
         <div class="welcome-header">
-            <h1>Bienvenido <?php echo htmlspecialchars($user['nombre_completo']); ?></h1>
+            <h1>Bienvenido <?= htmlspecialchars($user['nombre_completo']) ?></h1>
 
-            <?php if (isset($user['division_name'])): ?>
+            <?php if (!empty($user['division_name'])): ?>
                 <div class="division-badge">
-                    <span class="badge"><?php echo htmlspecialchars($user['division_name']); ?></span>
+                    <span class="badge"><?= htmlspecialchars($user['division_name']) ?></span>
                 </div>
             <?php endif; ?>
 
-            <p class="user-role">Rol: <?php echo ucfirst($user['rol']); ?></p>
+            <p class="user-role">Rol: <?= ucfirst($user['rol']) ?></p>
         </div>
 
         <!-- Estadísticas mejoradas -->
         <div class="stats-container">
             <div class="stat-card">
-                <span class="stat-number"><?php echo $stats['aspirantes']; ?></span>
+                <span class="stat-number"><?= $stats['aspirantes'] ?></span>
                 <div class="stat-label">Total Aspirantes</div>
                 <h3>Registro completo de candidatos en el sistema</h3>
             </div>
 
             <div class="stat-card">
-                <span class="stat-number"><?php echo $stats['activos']; ?></span>
+                <span class="stat-number"><?= $stats['activos'] ?></span>
                 <div class="stat-label">Aspirantes Activos</div>
                 <h3>Candidatos en proceso de formación</h3>
             </div>
 
             <div class="stat-card">
-                <span class="stat-number"><?php echo $stats['asistencias_hoy']; ?></span>
+                <span class="stat-number"><?= $stats['asistencias_hoy'] ?></span>
                 <div class="stat-label">Asistencias Hoy</div>
                 <h3>Registros de asistencia del día</h3>
             </div>
@@ -419,7 +371,7 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
                 <a href="modules/materias/" class="btn-dashboard">Ver Materias</a>
             </div>
 
-            <?php if ($user['rol'] === 'admin'): ?>
+            <?php if ($auth->isAdmin()): ?>
                 <div class="dashboard-card">
                     <div class="card-icon">👤</div>
                     <h2>Administración de Usuarios</h2>
@@ -463,46 +415,15 @@ $stats['asistencias_hoy'] = $result->fetch_assoc()['total'];
                 }, 16);
             });
 
-            // Efecto de hover mejorado para las cards
-            const dashboardCards = document.querySelectorAll('.dashboard-card');
-
-            dashboardCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-10px) scale(1.02)';
-                });
-
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-
             // Mostrar información contextual
-            const showContextInfo = () => {
-                const userRole = '<?php echo $user['rol']; ?>';
-                const divisionName = '<?php echo isset($user['division_name']) ? $user['division_name'] : ''; ?>';
+            const userRole = '<?= $user['rol'] ?>';
+            const divisionName = '<?= $user['division_name'] ?? '' ?>';
 
-                if (divisionName) {
-                    console.log(`Usuario conectado: ${userRole} - ${divisionName}`);
-                } else {
-                    console.log(`Usuario conectado: ${userRole}`);
-                }
-            };
-
-            showContextInfo();
-
-            // Auto-refresh de estadísticas cada 5 minutos
-            setInterval(function() {
-                fetch('api/stats.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.querySelector('.stat-card:nth-child(1) .stat-number').textContent = data.aspirantes;
-                            document.querySelector('.stat-card:nth-child(2) .stat-number').textContent = data.activos;
-                            document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = data.asistencias_hoy;
-                        }
-                    })
-                    .catch(error => console.log('Auto-refresh stats:', error));
-            }, 300000); // 5 minutos
+            if (divisionName) {
+                console.log(`Usuario conectado: ${userRole} - ${divisionName}`);
+            } else {
+                console.log(`Usuario conectado: ${userRole}`);
+            }
         });
     </script>
 </body>
