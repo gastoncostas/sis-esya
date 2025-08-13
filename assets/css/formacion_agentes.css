@@ -1,76 +1,57 @@
-/* Estilos específicos para la página de formación de agentes */
-
-.welcome-section {
-    text-align: center;
-    margin-bottom: 40px;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+/* Contenedor principal ajustado */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 60vh; /* Altura mínima para empujar el footer */
+    padding-bottom: 2rem;
 }
 
-.welcome-section h1 {
-    font-size: 2.2rem;
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-.navigation-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-bottom: 40px;
-}
-
-.nav-card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.nav-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.nav-card.disabled {
-    opacity: 0.7;
-    filter: grayscale(30%);
-}
-
-.nav-card.disabled:hover {
-    transform: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
+/* Sección de botón de volver */
 .back-section {
+    margin-top: auto; /* Empuja hacia abajo */
     text-align: center;
-    margin-top: 30px;
+    padding-top: 2rem;
 }
 
+/* Estilo del botón idéntico a esya.php */
 .btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
     background: #95a5a6;
     color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    width: auto;
+    margin: 0 auto; /* Centrado horizontal */
 }
 
 .btn-back:hover {
     background: #7f8c8d;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Icono de flecha */
+.btn-back::before {
+    content: "←";
+    font-size: 1.2rem;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .welcome-section {
-        padding: 20px;
+    .back-section {
+        padding-top: 1.5rem;
     }
     
-    .navigation-cards {
-        grid-template-columns: 1fr;
+    .btn-back {
+        width: 100%;
+        max-width: 200px;
     }
 }
