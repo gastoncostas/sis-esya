@@ -4,3 +4,4 @@ Stack trace:
 #1 C:\xampp\htdocs\sis-esya\login.php(47): Auth->login('admin', 'admin1234')
 #2 {main}
   thrown in C:\xampp\htdocs\sis-esya\includes\auth.php on line 52
+[16-Aug-2025 09:17:28 America/Argentina/Tucuman] Unknown database 'esyabd'
