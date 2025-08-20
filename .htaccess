@@ -1,0 +1,10 @@
+# Archivo: .htaccess
+RewriteEngine On
+RewriteBase /
+
+# Si la solicitud no es para un archivo existente
+RewriteCond %{REQUEST_FILENAME} !-f
+# Si la solicitud no es para un directorio existente
+RewriteCond %{REQUEST_FILENAME} !-d
+# Redirigir todas las solicitudes a dashboard.php
+RewriteRule ^(.*)$ dashboard.php?path=$1 [L,QSA]

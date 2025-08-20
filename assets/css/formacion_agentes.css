@@ -1,0 +1,57 @@
+/* Contenedor principal ajustado */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 60vh; /* Altura mínima para empujar el footer */
+    padding-bottom: 2rem;
+}
+
+/* Sección de botón de volver */
+.back-section {
+    margin-top: auto; /* Empuja hacia abajo */
+    text-align: center;
+    padding-top: 2rem;
+}
+
+/* Estilo del botón idéntico a esya.php */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #95a5a6;
+    color: white;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    width: auto;
+    margin: 0 auto; /* Centrado horizontal */
+}
+
+.btn-back:hover {
+    background: #7f8c8d;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Icono de flecha */
+.btn-back::before {
+    content: "←";
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .back-section {
+        padding-top: 1.5rem;
+    }
+    
+    .btn-back {
+        width: 100%;
+        max-width: 200px;
+    }
+}
