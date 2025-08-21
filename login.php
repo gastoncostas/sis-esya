@@ -49,7 +49,7 @@ if ($auth->isLoggedIn()) {
 }
 
 // 8. Obtener información de la división
-$division = filter_input(INPUT_GET, 'division', FILTER_SANITIZE_STRING) ?? '';
+$division = filter_input(INPUT_GET, 'division', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
 $division_names = [
     'jefatura_cuerpo' => 'Jefatura de Cuerpo',
     'jefatura_estudios' => 'Jefatura de Estudios',
@@ -69,8 +69,8 @@ if (isset($_GET['logout'])) {
 
 // 10. Procesamiento del formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     if (empty($username) || empty($password)) {
         $error = "Usuario y contraseña son requeridos";

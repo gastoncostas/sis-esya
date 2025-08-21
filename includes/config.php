@@ -23,12 +23,14 @@ define('DB_CHARSET', 'utf8mb4');
 define('PEPPER', 'TuCadenaSecretaUnicaAquí'); // Cambiar por un valor único
 define('SESSION_TIMEOUT', 1800); // 30 minutos en segundos
 
-// 5. Configuración de sesión segura
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 0); // Cambiar a 1 si usas HTTPS
-ini_set('session.gc_maxlifetime', SESSION_TIMEOUT);
-ini_set('session.cookie_lifetime', 0); // Expira al cerrar el navegador
+// 5. Configuración de sesión segura - SOLO si la sesión no está activa
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.cookie_secure', 0); // Cambiar a 1 si usas HTTPS
+    ini_set('session.gc_maxlifetime', SESSION_TIMEOUT);
+    ini_set('session.cookie_lifetime', 0); // Expira al cerrar el navegador
+}
 
 // 6. Manejo de errores según entorno
 if (ENVIRONMENT === 'development') {
