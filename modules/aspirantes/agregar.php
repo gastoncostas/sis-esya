@@ -29,6 +29,7 @@ if ($tableCheck->num_rows == 0) {
         `estado_civil` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
         `nivel_educativo` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
         `estado` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'activo',
+        `comision` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT 'A',
         `fecha_ingreso` date DEFAULT NULL,
         `observaciones` text COLLATE utf8mb4_unicode_ci,
         `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -48,11 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = trim($_POST['nombre']);
     $apellido = trim($_POST['apellido']);
     $fecha_nacimiento = $_POST['fecha_nacimiento'];
-    $domicilio = trim($_POST['domicilio']); // Cambiado de 'direccion' a 'domicilio'
+    $domicilio = trim($_POST['domicilio']);
     $telefono = trim($_POST['telefono']);
     $email = trim($_POST['email']);
     $estado = $_POST['estado'];
+    $comision = $_POST['comision'];
     $fecha_ingreso = $_POST['fecha_ingreso'];
+    $lugar_nacimiento = trim($_POST['lugar_nacimiento']);
+    $estado_civil = $_POST['estado_civil'];
+    $nivel_educativo = $_POST['nivel_educativo'];
+    $observaciones = trim($_POST['observaciones']);
 
     // Validaciones básicas
     if (empty($dni) || empty($nombre) || empty($apellido)) {
@@ -68,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'El DNI ya está registrado en el sistema';
         } else {
             // Insertar con los nombres de columna correctos
-            $stmt = $conn->prepare("INSERT INTO aspirantes (dni, nombre, apellido, fecha_nacimiento, domicilio, telefono, email, estado, fecha_ingreso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssssss", $dni, $nombre, $apellido, $fecha_nacimiento, $domicilio, $telefono, $email, $estado, $fecha_ingreso);
+            $stmt = $conn->prepare("INSERT INTO aspirantes (dni, nombre, apellido, fecha_nacimiento, domicilio, telefono, email, estado, comision, fecha_ingreso, lugar_nacimiento, estado_civil, nivel_educativo, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssssssssss", $dni, $nombre, $apellido, $fecha_nacimiento, $domicilio, $telefono, $email, $estado, $comision, $fecha_ingreso, $lugar_nacimiento, $estado_civil, $nivel_educativo, $observaciones);
 
             if ($stmt->execute()) {
                 $success = 'Aspirante registrado correctamente';
@@ -147,10 +153,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="baja" <?php echo (($_POST['estado'] ?? '') === 'baja') ? 'selected' : ''; ?>>Baja</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="comision" class="required">Comisión</label>
+                    <select id="comision" name="comision" required>
+                        <option value="">Seleccione una comisión</option>
+                        <option value="A" <?php echo (($_POST['comision'] ?? 'A') === 'A') ? 'selected' : ''; ?>>Comisión A</option>
+                        <option value="B" <?php echo (($_POST['comision'] ?? '') === 'B') ? 'selected' : ''; ?>>Comisión B</option>
+                        <option value="C" <?php echo (($_POST['comision'] ?? '') === 'C') ? 'selected' : ''; ?>>Comisión C</option>
+                        <option value="D" <?php echo (($_POST['comision'] ?? '') === 'D') ? 'selected' : ''; ?>>Comisión D</option>
+                        <option value="E" <?php echo (($_POST['comision'] ?? '') === 'E') ? 'selected' : ''; ?>>Comisión E</option>
+                        <option value="F" <?php echo (($_POST['comision'] ?? '') === 'F') ? 'selected' : ''; ?>>Comisión F</option>
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="domicilio">Domicilio</label> <!-- Cambiado de 'direccion' a 'domicilio' -->
+                <label for="domicilio">Domicilio</label>
                 <input type="text" id="domicilio" name="domicilio" value="<?php echo htmlspecialchars($_POST['domicilio'] ?? ''); ?>" maxlength="300">
             </div>
 
@@ -209,8 +228,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <?php include '../../includes/unified_footer.php'; ?>
-
-
 </body>
 
 </html>

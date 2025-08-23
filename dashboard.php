@@ -51,10 +51,16 @@ $stats = [
     'asistencias_hoy' => 0
 ];
 
-// Asistencias de hoy (solo si la tabla existe)
+// Asistencias de hoy (solo si la tabla existe) - CORREGIDO: solo presentes
 if (tableExists($conn, 'asistencia')) {
     $today = date('Y-m-d');
-    $stats['asistencias_hoy'] = safeCount($conn, 'asistencia', "fecha = '$today'");
+    // Contar solo los registros donde presente = 1 (true)
+    $stats['asistencias_hoy'] = safeCount($conn, 'asistencia', "fecha = '$today' AND presente = 1");
+    
+    // Asegurar que no supere el total de aspirantes
+    if ($stats['asistencias_hoy'] > $stats['aspirantes']) {
+        $stats['asistencias_hoy'] = $stats['aspirantes'];
+    }
 }
 
 // Verificar si es necesario crear tablas básicas
@@ -173,14 +179,12 @@ $showSetupAlert = (!empty($missingTables) && $user['rol'] === 'admin');
                         <div class="card-icon">📊</div>
                         <h2>Reportes y Estadísticas</h2>
                         <p>Generación de reportes estadísticos y de seguimiento académico para la toma de decisiones.</p>
-                        <a href="modules/reportes/" class="btn-dashboard">Ver Reportes</a>
                     </div>
 
                     <div class="dashboard-card">
                         <div class="card-icon">⚙️</div>
                         <h2>Configuración del Sistema</h2>
                         <p>Herramientas de administración y configuración del sistema ESyA.</p>
-                        <a href="modules/configuracion/" class="btn-dashboard">Configurar Sistema</a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -263,7 +267,7 @@ $showSetupAlert = (!empty($missingTables) && $user['rol'] === 'admin');
                         }
                     })
                     .catch(error => {
-                        alert('Error de conexión: ' + error.message);
+                        alert('Error de conexión: ' . error.message);
                     });
             }
         }

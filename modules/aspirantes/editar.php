@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefono = trim($_POST['telefono']);
     $email = trim($_POST['email']);
     $estado = $_POST['estado'];
+    $comision = $_POST['comision'];
     $fecha_ingreso = $_POST['fecha_ingreso'];
     $lugar_nacimiento = trim($_POST['lugar_nacimiento']);
     $estado_civil = $_POST['estado_civil'];
@@ -73,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'El DNI ya está registrado en el sistema';
         } else {
             // Actualizar datos del aspirante
-            $stmt = $conn->prepare("UPDATE aspirantes SET dni = ?, nombre = ?, apellido = ?, fecha_nacimiento = ?, domicilio = ?, telefono = ?, email = ?, estado = ?, fecha_ingreso = ?, lugar_nacimiento = ?, estado_civil = ?, nivel_educativo = ?, observaciones = ? WHERE id = ?");
+            $stmt = $conn->prepare("UPDATE aspirantes SET dni = ?, nombre = ?, apellido = ?, fecha_nacimiento = ?, domicilio = ?, telefono = ?, email = ?, estado = ?, comision = ?, fecha_ingreso = ?, lugar_nacimiento = ?, estado_civil = ?, nivel_educativo = ?, observaciones = ? WHERE id = ?");
             
             // Manejar valores nulos para la base de datos
             $fecha_nacimiento = empty($fecha_nacimiento) ? null : $fecha_nacimiento;
@@ -86,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nivel_educativo = empty($nivel_educativo) ? null : $nivel_educativo;
             $observaciones = empty($observaciones) ? null : $observaciones;
             
-            $stmt->bind_param("sssssssssssssi", $dni, $nombre, $apellido, $fecha_nacimiento, $domicilio, $telefono, $email, $estado, $fecha_ingreso, $lugar_nacimiento, $estado_civil, $nivel_educativo, $observaciones, $id);
+            $stmt->bind_param("ssssssssssssssi", $dni, $nombre, $apellido, $fecha_nacimiento, $domicilio, $telefono, $email, $estado, $comision, $fecha_ingreso, $lugar_nacimiento, $estado_civil, $nivel_educativo, $observaciones, $id);
 
             if ($stmt->execute()) {
                 $success = 'Aspirante actualizado correctamente';
@@ -172,6 +173,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="inactivo" <?php echo ($aspirante['estado'] === 'inactivo') ? 'selected' : ''; ?>>Inactivo</option>
                         <option value="graduado" <?php echo ($aspirante['estado'] === 'graduado') ? 'selected' : ''; ?>>Graduado</option>
                         <option value="baja" <?php echo ($aspirante['estado'] === 'baja') ? 'selected' : ''; ?>>Baja</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="comision" class="required">Comisión</label>
+                    <select id="comision" name="comision" required>
+                        <option value="A" <?php echo ($aspirante['comision'] === 'A') ? 'selected' : ''; ?>>Comisión A</option>
+                        <option value="B" <?php echo ($aspirante['comision'] === 'B') ? 'selected' : ''; ?>>Comisión B</option>
+                        <option value="C" <?php echo ($aspirante['comision'] === 'C') ? 'selected' : ''; ?>>Comisión C</option>
+                        <option value="D" <?php echo ($aspirante['comision'] === 'D') ? 'selected' : ''; ?>>Comisión D</option>
+                        <option value="E" <?php echo ($aspirante['comision'] === 'E') ? 'selected' : ''; ?>>Comisión E</option>
+                        <option value="F" <?php echo ($aspirante['comision'] === 'F') ? 'selected' : ''; ?>>Comisión F</option>
                     </select>
                 </div>
             </div>

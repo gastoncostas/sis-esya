@@ -74,6 +74,13 @@ $stmt->close();
                 </div>
 
                 <div class="detail-group">
+                    <div class="detail-label">Comisión</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['comision'] ? 'Comisión ' . htmlspecialchars($aspirante['comision']) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+
+                <div class="detail-group">
                     <div class="detail-label">Fecha de Nacimiento</div>
                     <div class="detail-value">
                         <?php echo $aspirante['fecha_nacimiento'] ? htmlspecialchars($aspirante['fecha_nacimiento']) : '<span class="empty">No especificado</span>'; ?>

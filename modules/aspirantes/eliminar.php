@@ -104,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="aspirante-details">
                         DNI: <?php echo htmlspecialchars($aspirante['dni']); ?> | 
+                        Comisión: <?php echo htmlspecialchars($aspirante['comision']); ?> | 
                         Estado: <?php echo htmlspecialchars(ucfirst($aspirante['estado'])); ?>
                     </div>
                 </div>

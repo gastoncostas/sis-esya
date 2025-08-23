@@ -796,3 +796,84 @@ nav a[href^="/SisAsp/"] {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* Badges para comisiones */
+.comision-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 12px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Badges para estados */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-activo {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-inactivo {
+    background-color: #6c757d;
+    color: white;
+}
+
+.status-graduado {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.status-baja {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Mensaje cuando no hay datos */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Información de la tabla */
+.table-info {
+    margin-top: 15px;
+    text-align: right;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Botones de acción con iconos */
+.actions .btn {
+    padding: 4px 8px;
+    margin: 2px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.actions .btn-view {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.actions .btn-edit {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.actions .btn-delete {
+    background-color: #dc3545;
+    color: white;
+}

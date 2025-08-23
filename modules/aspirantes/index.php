@@ -30,13 +30,19 @@ $conn = $db->getConnection();
     <div class="container">
         <div class="module-header">
             <h1>Gestión de Aspirantes</h1>
-            <a href="agregar.php" class="btn btn-primary">Nuevo Aspirante</a>
+            <div>
+                <a href="agregar.php" class="btn btn-primary">Nuevo Aspirante</a>
+                <a href="importar_excel.php" class="btn btn-success">📤 Importar desde CSV</a>
+            </div>
         </div>
 
         <div class="search-bar">
             <form method="GET" action="">
-                <input type="text" name="search" placeholder="Buscar por DNI, nombre o apellido">
+                <input type="text" name="search" placeholder="Buscar por DNI, nombre o apellido" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
                 <button type="submit" class="btn btn-search">Buscar</button>
+                <?php if (isset($_GET['search']) && !empty($_GET['search'])): ?>
+                    <a href="index.php" class="btn btn-cancel">Limpiar</a>
+                <?php endif; ?>
             </form>
         </div>
 
@@ -46,6 +52,8 @@ $conn = $db->getConnection();
                     <th>DNI</th>
                     <th>Apellido</th>
                     <th>Nombre</th>
+                    <th>Comisión</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -66,22 +74,47 @@ $conn = $db->getConnection();
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                while ($row = $result->fetch_assoc()):
+                if ($result->num_rows > 0):
+                    while ($row = $result->fetch_assoc()):
                 ?>
                     <tr>
                         <td><?php echo htmlspecialchars($row['dni']); ?></td>
                         <td><?php echo htmlspecialchars($row['apellido']); ?></td>
                         <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+                        <td>
+                            <span class="comision-badge">
+                                <?php echo htmlspecialchars($row['comision']); ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge status-<?php echo htmlspecialchars($row['estado']); ?>">
+                                <?php echo htmlspecialchars(ucfirst($row['estado'])); ?>
+                            </span>
+                        </td>
                         <td class="actions">
-                            <a href="editar.php?id=<?php echo $row['id']; ?>" class="btn btn-edit">Editar</a>
-                            <a href="eliminar.php?id=<?php echo $row['id']; ?>" class="btn btn-delete" onclick="return confirm('¿Está seguro?')">Eliminar</a>
-                            <a href="detalle.php?id=<?php echo $row['id']; ?>" class="btn btn-view">Ver</a>
+                            <a href="detalle.php?id=<?php echo $row['id']; ?>" class="btn btn-view" title="Ver detalle">👁️</a>
+                            <a href="editar.php?id=<?php echo $row['id']; ?>" class="btn btn-edit" title="Editar">✏️</a>
+                            <a href="eliminar.php?id=<?php echo $row['id']; ?>" class="btn btn-delete" title="Eliminar" onclick="return confirm('¿Está seguro de que desea eliminar este aspirante?')">🗑️</a>
                         </td>
                     </tr>
-                <?php endwhile; ?>
+                <?php 
+                    endwhile;
+                else:
+                ?>
+                    <tr>
+                        <td colspan="6" class="no-data">
+                            <?php if (!empty($search)): ?>
+                                No se encontraron aspirantes que coincidan con "<?php echo htmlspecialchars($search); ?>"
+                            <?php else: ?>
+                                No hay aspirantes registrados
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
-    </div>
+
+        </div>
 
     <?php include '../../includes/unified_footer.php'; ?>
     <script src="../../assets/js/script.js"></script>

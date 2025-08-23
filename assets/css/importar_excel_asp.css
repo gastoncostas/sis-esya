@@ -1,0 +1,158 @@
+
+/* Estilos adicionales específicos para importación usando la estética de detalle_asp.css */
+.instructions-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.instructions-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.instructions-title {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin: 0;
+    margin-left: 15px;
+}
+
+.instructions-icon {
+    font-size: 2rem;
+    color: #3498db;
+}
+
+.instruction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.instruction-group {
+    margin-bottom: 20px;
+}
+
+.instruction-label {
+    font-weight: bold;
+    color: #6c757d;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.instruction-value {
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.template-card {
+    background: #e7f3ff;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-left: 4px solid #3498db;
+}
+
+.upload-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.upload-box {
+    border: 2px dashed #3498db;
+    padding: 30px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 15px;
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #e74c3c;
+}
+
+.btn-download {
+    background: #28a745;
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-download:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.form-group {
+    margin: 20px 0;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    background: white;
+}
+
+.form-group input[type="file"]:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.text-muted {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: #3498db;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    margin-right: 10px;
+}
