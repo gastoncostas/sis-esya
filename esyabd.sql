@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 23-08-2025 a las 00:00:28
+-- Tiempo de generación: 25-08-2025 a las 21:39:58
 -- Versión del servidor: 9.1.0
 -- Versión de PHP: 8.3.14
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `esyabd`
 --
+CREATE DATABASE IF NOT EXISTS `esyabd` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `esyabd`;
 
 -- --------------------------------------------------------
 
@@ -40,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `asistencia` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_attendance` (`aspirante_id`,`comision`,`fecha`),
   KEY `fecha` (`fecha`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `asistencia`
@@ -62,7 +64,24 @@ INSERT INTO `asistencia` (`id`, `aspirante_id`, `comision`, `fecha`, `presente`,
 (21, 8, 'A', '2025-08-22', 0, 0, '', '2025-08-22 23:58:23'),
 (22, 13, 'F', '2025-08-22', 1, 0, '', '2025-08-22 23:58:28'),
 (23, 11, 'D', '2025-08-22', 1, 0, '', '2025-08-22 23:58:38'),
-(24, 17, 'D', '2025-08-22', 1, 0, '', '2025-08-22 23:58:38');
+(24, 17, 'D', '2025-08-22', 1, 0, '', '2025-08-22 23:58:38'),
+(25, 14, 'A', '2025-08-25', 1, 0, '', '2025-08-25 19:05:43'),
+(26, 8, 'A', '2025-08-25', 1, 0, '', '2025-08-25 19:05:43'),
+(27, 1, 'B', '2025-08-25', 1, 0, '', '2025-08-25 19:05:48'),
+(28, 9, 'B', '2025-08-25', 1, 0, '', '2025-08-25 19:05:48'),
+(29, 6, 'C', '2025-08-25', 0, 0, '', '2025-08-25 19:05:55'),
+(30, 10, 'C', '2025-08-25', 1, 0, '', '2025-08-25 19:05:55'),
+(31, 16, 'C', '2025-08-25', 1, 0, '', '2025-08-25 19:05:55'),
+(32, 11, 'D', '2025-08-25', 1, 0, '', '2025-08-25 19:06:01'),
+(33, 17, 'D', '2025-08-25', 1, 0, '', '2025-08-25 19:06:01'),
+(34, 12, 'E', '2025-08-25', 1, 0, '', '2025-08-25 19:06:13'),
+(35, 2, 'E', '2025-08-25', 0, 0, '', '2025-08-25 19:06:13'),
+(36, 4, 'E', '2025-08-25', 0, 0, '', '2025-08-25 19:06:13'),
+(37, 5, 'E', '2025-08-25', 0, 0, '', '2025-08-25 19:06:13'),
+(38, 13, 'F', '2025-08-25', 1, 0, '', '2025-08-25 19:06:23'),
+(39, 7, 'F', '2025-08-25', 1, 0, '', '2025-08-25 19:06:23'),
+(40, 18, 'C', '2025-08-25', 1, 0, '', '2025-08-25 19:37:08'),
+(41, 19, 'C', '2025-08-25', 1, 0, '', '2025-08-25 19:37:08');
 
 -- --------------------------------------------------------
 
@@ -91,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `aspirantes` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `dni` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `aspirantes`
@@ -111,9 +130,10 @@ INSERT INTO `aspirantes` (`id`, `dni`, `apellido`, `nombre`, `fecha_nacimiento`,
 (12, '39555666', 'Martínez', 'Roberto José', '1998-12-17', 'Monteros, Tucumán', 'Belgrano 234', '3815556677', 'roberto.martinez@email.com', 'casado', 'universitario', 'activo', 'E', '2025-02-01', 'Trabaja medio tiempo', '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
 (13, '42777888', 'Fernández', 'Laura Beatriz', '2003-09-03', 'Concepción, Tucumán', '25 de Mayo 456', '3815778899', 'laura.fernandez@email.com', 'soltero', 'secundario', 'activo', 'F', '2025-02-01', NULL, '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
 (14, '41000111', 'García', 'Diego Alejandro', '2000-01-25', 'Banda del Río Salí, Tucumán', 'San Martín 789', '3815001112', 'diego.garcia@email.com', 'soltero', 'terciario', 'activo', 'A', '2025-02-01', 'Deportista', '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
-(15, '39222333', 'Sánchez', 'Sofía Isabel', '1999-06-14', 'Alderetes, Tucumán', 'Mitre 321', '3815223344', 'sofia.sanchez@email.com', 'soltero', 'secundario', 'activo', 'B', '2025-02-01', NULL, '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
 (16, '41888555', 'Torres', 'Miguel Ángel', '2002-08-19', 'Aguilares, Tucumán', '9 de Julio 654', '3815885566', 'miguel.torres@email.com', 'soltero', 'secundario', 'activo', 'C', '2025-02-01', 'Hijo de personal', '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
-(17, '40666777', 'Romero', 'Carolina Andrea', '2001-02-28', 'Famaillá, Tucumán', 'Av. Alem 987', '3815667788', 'carolina.romero@email.com', 'soltero', 'terciario', 'activo', 'D', '2025-02-01', NULL, '2025-08-22 23:57:37', '2025-08-22 23:57:37');
+(17, '40666777', 'Romero', 'Carolina Andrea', '2001-02-28', 'Famaillá, Tucumán', 'Av. Alem 987', '3815667788', 'carolina.romero@email.com', 'soltero', 'terciario', 'activo', 'D', '2025-02-01', NULL, '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
+(18, '25639587', 'Alderete', 'Fernando Oscar', '1977-05-06', 'Colombre', 'Colombre', '3815670789', 'ferchu1482@gmail.com', 'casado', 'terciario', 'activo', 'C', '2008-08-25', '', '2025-08-25 19:34:40', '2025-08-25 19:34:40'),
+(19, '40727693', 'Juarez', 'Marcos Iván', '1997-09-17', '', '', '', '', 'soltero', 'universitario', 'activo', 'C', '2023-06-11', '', '2025-08-25 19:36:42', '2025-08-25 19:36:42');
 
 -- --------------------------------------------------------
 
@@ -161,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `username`, `email`, `password`, `nombre_completo`, `rol`, `last_login`, `created_at`) VALUES
-(1, 'admin', NULL, 'esya2025', 'Administrador del Sistema', 'administrador', '2025-08-22 20:30:44', '2025-08-21 19:30:28');
+(1, 'admin', NULL, 'esya2025', 'Administrador del Sistema', 'administrador', '2025-08-25 17:58:07', '2025-08-21 19:30:28');
 
 --
 -- Restricciones para tablas volcadas
