@@ -1,6 +1,7 @@
 <?php
 require_once '../../includes/config.php';
 require_once '../../includes/auth.php';
+require_once '../../includes/database.php';
 
 $auth = new Auth();
 
@@ -12,7 +13,7 @@ if (!$auth->isLoggedIn()) {
 $db = new Database();
 $conn = $db->getConnection();
 
-// Obtener ID del aspirante
+// Obtener ID del cursante
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($id <= 0) {
@@ -20,8 +21,8 @@ if ($id <= 0) {
     exit();
 }
 
-// Cargar datos del aspirante
-$stmt = $conn->prepare("SELECT * FROM aspirantes WHERE id = ?");
+// Cargar datos del cursante
+$stmt = $conn->prepare("SELECT * FROM cursante WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -41,7 +42,7 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo APP_NAME; ?> - Detalle del Aspirante</title>
+    <title><?php echo APP_NAME; ?> - Detalle del Cursante</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/detalle_asp.css">
     <link rel="stylesheet" href="../../assets/css/unified_header_footer.css">
@@ -55,7 +56,7 @@ $stmt->close();
             <a href="index.php">← Volver al listado</a>
         </div>
 
-        <h1>Detalle del Aspirante</h1>
+        <h1>Detalle del Cursante</h1>
 
         <div class="detail-card">
             <div class="detail-header">
@@ -66,69 +67,115 @@ $stmt->close();
                     <?php echo htmlspecialchars(ucfirst($aspirante['estado'])); ?>
                 </span>
             </div>
-
             <div class="detail-grid">
                 <div class="detail-group">
                     <div class="detail-label">DNI</div>
                     <div class="detail-value"><?php echo htmlspecialchars($aspirante['dni']); ?></div>
                 </div>
-
                 <div class="detail-group">
                     <div class="detail-label">Comisión</div>
                     <div class="detail-value">
-                        <?php echo $aspirante['comision'] ? 'Comisión ' . htmlspecialchars($aspirante['comision']) : '<span class="empty">No especificado</span>'; ?>
+                        <?php echo $aspirante['comision'] ? 'Comisión ' . htmlspecialchars($aspirante['comision']) : '<span class="empty">No asignada</span>'; ?>
                     </div>
                 </div>
-
                 <div class="detail-group">
                     <div class="detail-label">Fecha de Nacimiento</div>
                     <div class="detail-value">
-                        <?php echo $aspirante['fecha_nacimiento'] ? htmlspecialchars($aspirante['fecha_nacimiento']) : '<span class="empty">No especificado</span>'; ?>
+                        <?php echo $aspirante['fecha_nacimiento'] ? htmlspecialchars(date('d/m/Y', strtotime($aspirante['fecha_nacimiento']))) : '<span class="empty">No especificada</span>'; ?>
                     </div>
                 </div>
-
-                <div class="detail-group">
-                    <div class="detail-label">Fecha de Ingreso</div>
-                    <div class="detail-value">
-                        <?php echo $aspirante['fecha_ingreso'] ? htmlspecialchars($aspirante['fecha_ingreso']) : '<span class="empty">No especificado</span>'; ?>
-                    </div>
-                </div>
-
-                <div class="detail-group">
-                    <div class="detail-label">Lugar de Nacimiento</div>
-                    <div class="detail-value">
-                        <?php echo $aspirante['lugar_nacimiento'] ? htmlspecialchars($aspirante['lugar_nacimiento']) : '<span class="empty">No especificado</span>'; ?>
-                    </div>
-                </div>
-
-                <div class="detail-group">
-                    <div class="detail-label">Domicilio</div>
-                    <div class="detail-value">
-                        <?php echo $aspirante['domicilio'] ? htmlspecialchars($aspirante['domicilio']) : '<span class="empty">No especificado</span>'; ?>
-                    </div>
-                </div>
-
-                <div class="detail-group">
-                    <div class="detail-label">Teléfono</div>
-                    <div class="detail-value">
-                        <?php echo $aspirante['telefono'] ? htmlspecialchars($aspirante['telefono']) : '<span class="empty">No especificado</span>'; ?>
-                    </div>
-                </div>
-
-                <div class="detail-group">
-                    <div class="detail-label">Email</div>
-                    <div class="detail-value">
-                        <?php echo $aspirante['email'] ? htmlspecialchars($aspirante['email']) : '<span class="empty">No especificado</span>'; ?>
-                    </div>
-                </div>
-
                 <div class="detail-group">
                     <div class="detail-label">Estado Civil</div>
                     <div class="detail-value">
                         <?php echo $aspirante['estado_civil'] ? htmlspecialchars(ucfirst($aspirante['estado_civil'])) : '<span class="empty">No especificado</span>'; ?>
                     </div>
                 </div>
-
+                <div class="detail-group">
+                    <div class="detail-label">Hijos</div>
+                    <div class="detail-value">
+                        <?php echo htmlspecialchars($aspirante['hijos']) . ($aspirante['nombre_hijos'] ? ' (' . htmlspecialchars($aspirante['nombre_hijos']) . ')' : ''); ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Padre / Vive</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['nombre_padre'] ? htmlspecialchars($aspirante['nombre_padre']) : '<span class="empty">No especificado</span>'; ?>
+                        (<?php echo $aspirante['vive_padre'] ? 'Sí' : 'No'; ?>)
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Madre / Vive</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['nombre_madre'] ? htmlspecialchars($aspirante['nombre_madre']) : '<span class="empty">No especificado</span>'; ?>
+                        (<?php echo $aspirante['vive_madre'] ? 'Sí' : 'No'; ?>)
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Dirección</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['direccion_real'] ? htmlspecialchars($aspirante['direccion_real']) : '<span class="empty">No especificada</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Departamento</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['depto'] ? htmlspecialchars(ucfirst($aspirante['depto'])) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Localidad</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['localidad'] ? htmlspecialchars(ucfirst($aspirante['localidad'])) : '<span class="empty">No especificada</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Código Postal</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['cod_postal'] ? htmlspecialchars($aspirante['cod_postal']) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Teléfono</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['telefono'] ? htmlspecialchars($aspirante['telefono']) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['email'] ? htmlspecialchars($aspirante['email']) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Familiar Directo</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['nombre_fam_directo'] ? htmlspecialchars($aspirante['nombre_fam_directo']) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Teléfono Familiar</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['tel_fam_directo'] ? htmlspecialchars($aspirante['tel_fam_directo']) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Parentezco</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['parentezco'] ? htmlspecialchars($aspirante['parentezco']) : '<span class="empty">No especificado</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Fecha de Ingreso</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['fecha_ingreso'] ? htmlspecialchars(date('d/m/Y', strtotime($aspirante['fecha_ingreso']))) : '<span class="empty">No especificada</span>'; ?>
+                    </div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-label">Situación de Revista</div>
+                    <div class="detail-value">
+                        <?php echo $aspirante['sit_revista'] ? htmlspecialchars(ucfirst($aspirante['sit_revista'])) : '<span class="empty">No especificada</span>'; ?>
+                    </div>
+                </div>
                 <div class="detail-group">
                     <div class="detail-label">Nivel Educativo</div>
                     <div class="detail-value">
@@ -137,15 +184,15 @@ $stmt->close();
                 </div>
             </div>
 
-            <?php if (!empty($aspirante['observaciones'])): ?>
-            <div class="detail-group">
-                <div class="detail-label">Observaciones</div>
-                <div class="detail-value"><?php echo nl2br(htmlspecialchars($aspirante['observaciones'])); ?></div>
-            </div>
+            <?php if (!empty($aspirante['novedades'])): ?>
+                <div class="detail-group">
+                    <div class="detail-label">Novedades</div>
+                    <div class="detail-value"><?php echo nl2br(htmlspecialchars($aspirante['novedades'])); ?></div>
+                </div>
             <?php endif; ?>
 
             <div class="created-info">
-                Registrado el: <?php echo date('d/m/Y H:i', strtotime($aspirante['created_at'])); ?> | 
+                Registrado el: <?php echo date('d/m/Y H:i', strtotime($aspirante['created_at'])); ?> |
                 Última actualización: <?php echo date('d/m/Y H:i', strtotime($aspirante['updated_at'])); ?>
             </div>
         </div>

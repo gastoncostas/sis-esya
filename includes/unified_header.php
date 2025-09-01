@@ -105,7 +105,7 @@ function isPageActive($page_path, $current_uri = null)
                     </li>
                     <li class="<?php echo isPageActive('aspirantes') ? 'active' : ''; ?>">
                         <a href="<?php echo defined('BASE_URL') ? BASE_URL : '/'; ?>modules/aspirantes/">
-                            <i class="icon">👥</i> Aspirantes
+                            <i class="icon">👥</i> Cursantes
                         </a>
                     </li>
                     <li class="<?php echo isPageActive('asistencia') ? 'active' : ''; ?>">
@@ -156,48 +156,6 @@ function isPageActive($page_path, $current_uri = null)
     </header>
 <?php endif; ?>
 
-<style>
-    /* Iconos inline para el header */
-    .icon {
-        font-style: normal;
-        margin-right: 8px;
-        font-size: 0.9em;
-        opacity: 0.8;
-    }
-
-    /* Ajuste para rutas relativas en subdirectorios */
-    nav a[href*="modules/"],
-    nav a[href*="dashboard.php"],
-    nav a[href*="perfil.php"],
-    nav a[href*="logout.php"] {
-        color: white;
-        text-decoration: none;
-    }
-
-    /* Mejora visual para división del usuario */
-    .user-dropdown a[onclick="return false;"] {
-        background-color: rgba(52, 152, 219, 0.1);
-        border-left: 3px solid #3498db;
-        font-weight: 500;
-    }
-
-    /* Responsive para iconos */
-    @media (max-width: 768px) {
-        .icon {
-            display: none;
-        }
-
-        .user-name {
-            display: none;
-        }
-
-        .user-avatar {
-            width: 30px;
-            height: 30px;
-            font-size: 0.8rem;
-        }
-    }
-</style>
 
 <script>
     // Mejorar la experiencia del menú dropdown en móviles

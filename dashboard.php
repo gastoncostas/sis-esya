@@ -56,7 +56,7 @@ if (tableExists($conn, 'asistencia')) {
     $today = date('Y-m-d');
     // Contar solo los registros donde presente = 1 (true)
     $stats['asistencias_hoy'] = safeCount($conn, 'asistencia', "fecha = '$today' AND presente = 1");
-    
+
     // Asegurar que no supere el total de aspirantes
     if ($stats['asistencias_hoy'] > $stats['aspirantes']) {
         $stats['asistencias_hoy'] = $stats['aspirantes'];
@@ -127,13 +127,13 @@ $showSetupAlert = (!empty($missingTables) && $user['rol'] === 'admin');
             <div class="stats-container">
                 <div class="stat-card">
                     <span class="stat-number"><?php echo $stats['aspirantes']; ?></span>
-                    <div class="stat-label">Total Aspirantes</div>
+                    <div class="stat-label">Total Cursantes</div>
                     <h3>Registro completo de candidatos en el sistema</h3>
                 </div>
 
                 <div class="stat-card">
                     <span class="stat-number"><?php echo $stats['activos']; ?></span>
-                    <div class="stat-label">Aspirantes Activos</div>
+                    <div class="stat-label">Cursantes Activos</div>
                     <h3>Candidatos en proceso de formación</h3>
                 </div>
 
@@ -148,8 +148,8 @@ $showSetupAlert = (!empty($missingTables) && $user['rol'] === 'admin');
             <div class="dashboard-cards">
                 <div class="dashboard-card">
                     <div class="card-icon">👥</div>
-                    <h2>Aspirantes</h2>
-                    <p>Gestión completa de aspirantes: registro, edición y seguimiento de su progreso académico en tiempo real.</p>
+                    <h2>Cursantes</h2>
+                    <p>Gestión completa de los cursantes: registro, edición y seguimiento de su progreso académico en tiempo real.</p>
                     <a href="modules/aspirantes/" class="btn-dashboard">Acceder al Módulo</a>
                 </div>
 
@@ -267,7 +267,7 @@ $showSetupAlert = (!empty($missingTables) && $user['rol'] === 'admin');
                         }
                     })
                     .catch(error => {
-                        alert('Error de conexión: ' . error.message);
+                        alert('Error de conexión: '.error.message);
                     });
             }
         }
