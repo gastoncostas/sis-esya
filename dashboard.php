@@ -46,8 +46,8 @@ function safeCount($conn, $table, $where = '')
 
 // Obtener estadísticas de manera segura
 $stats = [
-    'aspirantes' => safeCount($conn, 'aspirantes'),
-    'activos' => safeCount($conn, 'aspirantes', "estado = 'activo'"),
+    'aspirantes' => safeCount($conn, 'cursante'),
+    'activos' => safeCount($conn, 'cursante', "estado = 'activo'"),
     'asistencias_hoy' => 0
 ];
 

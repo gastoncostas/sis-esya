@@ -26,7 +26,7 @@ $error = '';
 $success = '';
 
 // Obtener lista de aspirantes de la comisión seleccionada
-$stmt_aspirantes = $conn->prepare("SELECT id, dni, nombre, apellido, comision FROM aspirantes WHERE comision = ? ORDER BY apellido, nombre");
+$stmt_aspirantes = $conn->prepare("SELECT id, dni, nombre, apellido, comision FROM cursante WHERE comision = ? ORDER BY apellido, nombre");
 $stmt_aspirantes->bind_param("s", $comision_seleccionada);
 $stmt_aspirantes->execute();
 $result_aspirantes = $stmt_aspirantes->get_result();

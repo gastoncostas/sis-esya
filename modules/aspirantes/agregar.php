@@ -1025,15 +1025,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $direccion_real = trim($_POST['direccion_real']);
     $depto = $_POST['depto'];
     $localidad = $_POST['localidad'];
-    $cod_postal = trim($_POST['cod_postal']);
-    $telefono = trim($_POST['telefono']);
+    $cod_postal = !empty(trim($_POST['cod_postal'])) ? intval(trim($_POST['cod_postal'])) : null;
+    $telefono = !empty(trim($_POST['telefono'])) ? intval(trim($_POST['telefono'])) : null;
     $email = trim($_POST['email']);
     $nombre_fam_directo = trim($_POST['nombre_fam_directo']);
-    $tel_fam_directo = trim($_POST['tel_fam_directo']);
+    $tel_fam_directo = !empty(trim($_POST['tel_fam_directo'])) ? intval(trim($_POST['tel_fam_directo'])) : null;
     $parentezco = trim($_POST['parentezco']);
     $comision = $_POST['comision'];
     $fecha_ingreso = $_POST['fecha_ingreso'];
-    $sit_revista = trim($_POST['sit_revista']);
+    $sit_revista = $_POST['sit_revista'];
     $novedades = trim($_POST['novedades']);
     $estado = $_POST['estado'];
 
@@ -1069,11 +1069,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $direccion_real = empty($direccion_real) ? null : $direccion_real;
             $depto = empty($depto) ? null : $depto;
             $localidad = empty($localidad) ? null : $localidad;
-            $cod_postal = empty($cod_postal) ? null : $cod_postal;
-            $telefono = empty($telefono) ? null : $telefono;
             $email = empty($email) ? null : $email;
             $nombre_fam_directo = empty($nombre_fam_directo) ? null : $nombre_fam_directo;
-            $tel_fam_directo = empty($tel_fam_directo) ? null : $tel_fam_directo;
             $parentezco = empty($parentezco) ? null : $parentezco;
             $comision = empty($comision) ? null : $comision;
             $sit_revista = empty($sit_revista) ? null : $sit_revista;
@@ -1081,7 +1078,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $estado = empty($estado) ? null : $estado;
 
             $stmt->bind_param(
-                "sssssissssissssssssssssss",
+                "sssssissssiississssissssss",
                 $dni,
                 $nombre,
                 $apellido,
@@ -1186,10 +1183,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="estado">Estado</label>
                     <select id="estado" name="estado">
                         <option value="">Seleccionar</option>
-                        <option value="activo" <?php echo (isset($_POST['estado']) && $_POST['estado'] == 'activo') ? 'selected' : ''; ?>>Activo</option>
-                        <option value="inactivo" <?php echo (isset($_POST['estado']) && $_POST['estado'] == 'inactivo') ? 'selected' : ''; ?>>Inactivo</option>
-                        <option value="graduado" <?php echo (isset($_POST['estado']) && $_POST['estado'] == 'graduado') ? 'selected' : ''; ?>>Graduado</option>
-                        <option value="baja" <?php echo (isset($_POST['estado']) && $_POST['estado'] == 'baja') ? 'selected' : ''; ?>>Baja</option>
+                        <option value="ASPIRANTE" <?php echo (isset($_POST['estado']) && $_POST['estado'] == 'ASPIRANTE') ? 'selected' : ''; ?>>Aspirante</option>
+                        <option value="SUPLENTE" <?php echo (isset($_POST['estado']) && $_POST['estado'] == 'SUPLENTE') ? 'selected' : ''; ?>>Suplente</option>
+                        <option value="CURSANTE" <?php echo (isset($_POST['estado']) && $_POST['estado'] == 'CURSANTE') ? 'selected' : ''; ?>>Cursante</option>
                     </select>
                 </div>
 
@@ -1212,10 +1208,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="estado_civil">Estado Civil</label>
                     <select id="estado_civil" name="estado_civil">
                         <option value="">Seleccionar</option>
-                        <option value="soltero" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'soltero') ? 'selected' : ''; ?>>Soltero/a</option>
-                        <option value="casado" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'casado') ? 'selected' : ''; ?>>Casado/a</option>
-                        <option value="divorciado" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'divorciado') ? 'selected' : ''; ?>>Divorciado/a</option>
-                        <option value="viudo" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'viudo') ? 'selected' : ''; ?>>Viudo/a</option>
+                        <option value="SOLTERO/A" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'SOLTERO/A') ? 'selected' : ''; ?>>Soltero/a</option>
+                        <option value="CASADO/A" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'CASADO/A') ? 'selected' : ''; ?>>Casado/a</option>
+                        <option value="DIVORCIADO/A" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'DIVORCIADO/A') ? 'selected' : ''; ?>>Divorciado/a</option>
+                        <option value="VIUDO/A" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'VIUDO/A') ? 'selected' : ''; ?>>Viudo/a</option>
+                        <option value="CONCUBINATO" <?php echo (isset($_POST['estado_civil']) && $_POST['estado_civil'] == 'CONCUBINATO') ? 'selected' : ''; ?>>Concubinato</option>
                     </select>
                 </div>
 
@@ -1278,7 +1275,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <select id="localidad" name="localidad">
                         <option value="">Seleccionar</option>
                         <?php foreach ($localidades as $l): ?>
-                            <option value="<?php echo htmlspecialchars($l); ?>" <?php echo (isset($aspirante['localidad']) && $aspirante['localidad'] == $l) ? 'selected' : ''; ?>>
+                            <option value="<?php echo htmlspecialchars($l); ?>" <?php echo (isset($_POST['localidad']) && $_POST['localidad'] == $l) ? 'selected' : ''; ?>>
                                 <?php echo htmlspecialchars($l); ?>
                             </option>
                         <?php endforeach; ?>
@@ -1323,7 +1320,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-row">
                 <div class="form-group">
                     <label for="sit_revista">Situación de Revista</label>
-                    <input type="text" id="sit_revista" name="sit_revista" value="<?php echo isset($_POST['sit_revista']) ? htmlspecialchars($_POST['sit_revista']) : ''; ?>" maxlength="100">
+                    <select id="sit_revista" name="sit_revista">
+                        <option value="">Seleccionar</option>
+                        <option value="A.R.T." <?php echo (isset($_POST['sit_revista']) && $_POST['sit_revista'] == 'A.R.T.') ? 'selected' : ''; ?>>A.R.T.</option>
+                        <option value="NOTA MÉDICA" <?php echo (isset($_POST['sit_revista']) && $_POST['sit_revista'] == 'NOTA MÉDICA') ? 'selected' : ''; ?>>Nota Médica</option>
+                        <option value="DISPONIBLE" <?php echo (isset($_POST['sit_revista']) && $_POST['sit_revista'] == 'DISPONIBLE') ? 'selected' : ''; ?>>Disponible</option>
+                        <option value="PASIVO" <?php echo (isset($_POST['sit_revista']) && $_POST['sit_revista'] == 'PASIVO') ? 'selected' : ''; ?>>Pasivo</option>
+                        <option value="ACTIVO" <?php echo (isset($_POST['sit_revista']) && $_POST['sit_revista'] == 'ACTIVO') ? 'selected' : ''; ?>>Activo</option>
+                    </select>
                 </div>
             </div>
 
