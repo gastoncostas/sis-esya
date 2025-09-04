@@ -19,11 +19,11 @@ $systems = [
     ],
     [
         'title' => 'Aula Virtual',
-        'description' => 'Plataforma destinada a los cursantes para brindarles recursos digitales para la formación.',
-        'link' => '#',
-        'class' => 'disabled',
+        'description' => 'Plataforma destinada a los cursantes para brindarles recursos digitales para su formación.',
+        'link' => 'aula1-con-bruno',
+        'class' => '',
         'btn_class' => 'btn-secondary',
-        'btn_text' => 'En Desarrollo'
+        'btn_text' => 'Acceder'
     ]
 ];
 ?>

@@ -132,7 +132,7 @@ $showSetupAlert = (!empty($missingTables) && $user['rol'] === 'admin');
                 </div>
 
                 <div class="stat-card">
-                    <span class="stat-number"><?php echo $stats['activos']; ?></span>
+                    <span class="stat-number"><?php echo $stats['estado']; ?></span>
                     <div class="stat-label">Cursantes Activos</div>
                     <h3>Candidatos en proceso de formación</h3>
                 </div>

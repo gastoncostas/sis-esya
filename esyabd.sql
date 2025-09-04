@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 02-09-2025 a las 23:22:10
+-- Tiempo de generación: 03-09-2025 a las 13:01:10
 -- Versión del servidor: 9.1.0
 -- Versión de PHP: 8.3.14
 
@@ -141,12 +141,11 @@ CREATE TABLE IF NOT EXISTS `cursante` (
 --
 
 INSERT INTO `cursante` (`id`, `dni`, `apellido`, `nombre`, `fecha_nacimiento`, `estado_civil`, `hijos`, `nombre_hijos`, `nombre_padre`, `nombre_madre`, `vive_padre`, `vive_madre`, `direccion_real`, `depto`, `localidad`, `cod_postal`, `telefono`, `email`, `nombre_fam_directo`, `tel_fam_directo`, `parentezco`, `comision`, `fecha_ingreso`, `sit_revista`, `novedades`, `estado`, `created_at`, `updated_at`) VALUES
-(1, '42467885', 'Costas', 'Gastón Jesús Sebastián', '2000-05-30', '', 0, NULL, NULL, NULL, 1, 1, 'Lote 38, Loteo Martínez, San Andrés, Cruz Alta, Tucumán.', 'CRUZ ALTA', 'SAN ANDRÉS', NULL, 2147483647, 'gncostas@gmail.com', NULL, NULL, NULL, 'B', '2025-02-03', NULL, NULL, '', '2025-08-21 20:09:52', '2025-08-22 19:49:59'),
+(1, '42467885', 'Costas', 'Gastón Jesús Sebastián', '2000-05-30', 'SOLTERO/A', 0, NULL, 'Emilio Waldo Sebastián Costas', 'Liliana Francisca Frías', 1, 1, 'Lote 38, Loteo Martínez, San Andrés, Cruz Alta, Tucumán.', 'CRUZ ALTA', 'SAN ANDRÉS', 4111, 2147483647, 'gncostas@gmail.com', 'Liliana Francisca Frías', NULL, '0', 'B', '2025-02-03', 'ACTIVO', NULL, 'CURSANTE', '2025-08-21 20:09:52', '2025-09-03 11:34:24'),
 (2, '43706634', 'Ortega', 'Sebastian Eduardo', '2002-04-04', '', 0, NULL, NULL, NULL, 1, 1, 'Pasaje San José 2369, San Miguel de Tucumán, Tucumán.', 'CAPITAL', 'SAN MIGUEL DE TUCUMÁN', NULL, 2147483647, 'sebaortegaa8@gmail.com', NULL, NULL, NULL, 'E', '2025-02-03', NULL, NULL, '', '2025-08-21 20:14:50', '2025-08-22 19:50:14'),
-(4, '44232302', 'Quipildor Rueda', 'Santiago', '2000-01-01', NULL, 0, NULL, NULL, NULL, 1, 1, 'Salta 655, Barrio Norte, San Miguel de Tucumán, Tucumán.', 'CAPITAL', 'SAN MIGUEL DE TUCUMÁN', NULL, 2147483647, 'djquipicirujaa7@gmail.com', NULL, NULL, NULL, 'E', '2025-02-03', NULL, NULL, '', '2025-08-21 21:09:51', '2025-08-22 19:50:21'),
+(4, '44232302', 'Quipildor Rueda', 'Santiago', '2000-01-01', 'SOLTERO/A', 0, NULL, NULL, NULL, 1, 1, 'Salta 655, Barrio Norte, San Miguel de Tucumán, Tucumán.', 'CAPITAL', 'SAN MIGUEL DE TUCUMÁN', NULL, 2147483647, 'djquipicirujaa7@gmail.com', NULL, NULL, NULL, 'E', '2025-02-03', 'ACTIVO', NULL, 'CURSANTE', '2025-08-21 21:09:51', '2025-09-03 11:33:03'),
 (5, '38743470', 'Roldán', 'Gabriel Elias', '1995-06-23', '', 0, NULL, NULL, NULL, 1, 1, 'Laprida 650, Alderetes, Tucumán.', 'CRUZ ALTA', 'ALDERETES', NULL, 2147483647, 'rgabrielelias@icloud.com', NULL, NULL, NULL, 'E', '2018-04-19', NULL, NULL, '', '2025-08-21 21:14:50', '2025-08-22 19:50:34'),
 (6, '42355921', 'Elias', 'Lucas Serafín', '1999-10-24', 'SOLTERO/A', 0, NULL, 'Marcelo Daniel Elias', 'Patricia del Valle Montenegro', 1, 1, 'Av. Amador Lucero 2115', 'CAPITAL', 'SAN MIGUEL DE TUCUMÁN', 4001, 2147483647, 'lucaselias2115@gmail.com', 'Patricia del Valle Montenegro', 4365580, NULL, 'D', '2025-02-03', 'ACTIVO', NULL, 'CURSANTE', '2025-08-22 16:50:43', '2025-09-02 23:19:29'),
-(8, '40123456', 'Gómez', 'Juan Carlos', '2000-03-15', '', 0, NULL, NULL, NULL, 1, 1, 'Av. Soldati 1234', 'CAPITAL', 'SAN MIGUEL DE TUCUMÁN', NULL, 2147483647, 'juan.gomez@email.com', NULL, NULL, NULL, 'A', '2025-02-01', NULL, NULL, '', '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
 (9, '38987654', 'Rodríguez', 'María Elena', '1999-07-22', '', 0, NULL, NULL, NULL, 1, 1, 'Calle Lamadrid 567', 'YERBA BUENA', 'YERBA BUENA', NULL, 2147483647, 'maria.rodriguez@email.com', NULL, NULL, NULL, 'B', '2025-02-01', NULL, 'Becado', '', '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
 (10, '42111222', 'Pérez', 'Carlos Alberto', '2001-11-30', '', 0, NULL, NULL, NULL, 1, 1, 'Ruta 301 Km 5', 'TAFÍ VIEJO', 'TAFÍ VIEJO', NULL, 2147483647, 'carlos.perez@email.com', NULL, NULL, NULL, 'C', '2025-02-01', NULL, NULL, '', '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
 (11, '40333444', 'López', 'Ana María', '2002-05-08', '', 0, NULL, NULL, NULL, 1, 1, 'Sarmiento 890', 'LULES', 'LULES', NULL, 2147483647, 'ana.lopez@email.com', NULL, NULL, NULL, 'D', '2025-02-01', NULL, 'Transporte propio', '', '2025-08-22 23:57:37', '2025-08-22 23:57:37'),
@@ -203,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `username`, `email`, `password`, `nombre_completo`, `rol`, `last_login`, `created_at`) VALUES
-(1, 'admin', NULL, 'esya2025', 'Administrador del Sistema', 'administrador', '2025-09-02 20:17:11', '2025-08-21 19:30:28');
+(1, 'admin', NULL, 'esya2025', 'Administrador del Sistema', 'administrador', '2025-09-03 09:47:36', '2025-08-21 19:30:28');
 
 --
 -- Restricciones para tablas volcadas

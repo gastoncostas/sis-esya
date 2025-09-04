@@ -1,0 +1,42 @@
+{
+    "admin": {
+        "password": "$2y$10$0RYoq\/K.qTiQc7KRd5Sd9OnyTv9WN3azR1rrRFUPfJT3zf2aON7EO",
+        "role": "admin",
+        "name": "Administrador Principal",
+        "email": "admin@escuela.com",
+        "telefono": "1122334455",
+        "turno": "mañana",
+        "comision": "A",
+        "fecha_registro": "2025-08-26 15:36:40"
+    },
+    "profesor": {
+        "password": "$2y$10$.NG6H.HhSP6TvE9.ttUrC.sg6h7VH5VlykuprWm6l\/eHl5pvrIVd.",
+        "role": "profesor",
+        "name": "Profesor Ejemplo",
+        "email": "profesor@escuela.com",
+        "telefono": "1144556677",
+        "turno": "tarde",
+        "comision": "B",
+        "fecha_registro": "2025-08-26 15:36:41"
+    },
+    "alumno": {
+        "password": "$2y$10$lcoTu483SY79DnFlxxfPrOKxdCX5j6piQD5EKHWqTTmNee88Uq\/.q",
+        "role": "alumno",
+        "name": "Alumno Ejemplo",
+        "email": "alumno@escuela.com",
+        "telefono": "1155667788",
+        "turno": "mañana",
+        "comision": "C",
+        "fecha_registro": "2025-08-26 15:36:41"
+    },
+    "lucaselias2115": {
+        "password": "$2y$10$EWlOPlBfNUIdxmCmWl5vEe8dyNVpcsmys3X7YaIATQyFdwETD3Ik6",
+        "role": "admin",
+        "name": "Lucas Serafín Elias",
+        "comision": "D",
+        "email": "lucaselias2115@gmail.com",
+        "telefono": "3815985387",
+        "turno": "tarde",
+        "fecha_registro": "2025-08-26 15:36:41"
+    }
+}

@@ -1025,11 +1025,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $direccion_real = trim($_POST['direccion_real']);
     $depto = $_POST['depto'];
     $localidad = $_POST['localidad'];
-    $cod_postal = !empty(trim($_POST['cod_postal'])) ? intval(trim($_POST['cod_postal'])) : null;
-    $telefono = !empty(trim($_POST['telefono'])) ? intval(trim($_POST['telefono'])) : null;
+    $cod_postal = !empty(trim($_POST['cod_postal'])) ? intval(trim($_POST['cod_postal'])) : 0;
+    $telefono = !empty(trim($_POST['telefono'])) ? intval(trim($_POST['telefono'])) : 0;
     $email = trim($_POST['email']);
     $nombre_fam_directo = trim($_POST['nombre_fam_directo']);
-    $tel_fam_directo = !empty(trim($_POST['tel_fam_directo'])) ? intval(trim($_POST['tel_fam_directo'])) : null;
+    $tel_fam_directo = !empty(trim($_POST['tel_fam_directo'])) ? intval(trim($_POST['tel_fam_directo'])) : 0;
     $parentezco = trim($_POST['parentezco']);
     $comision = $_POST['comision'];
     $fecha_ingreso = $_POST['fecha_ingreso'];
@@ -1077,8 +1077,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $novedades = empty($novedades) ? null : $novedades;
             $estado = empty($estado) ? null : $estado;
 
+            // Cadena de tipos corregida - 25 caracteres para 25 parámetros
             $stmt->bind_param(
-                "sssssissssiississssissssss",
+                "sssssissssiississssisssss", // 25 caracteres 's' e 'i'
                 $dni,
                 $nombre,
                 $apellido,
@@ -1338,7 +1339,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Agregar Cursante</button>
-                <a href="listar.php" class="btn btn-cancel">Cancelar</a>
+                <a href="detalle.php" class="btn btn-cancel">Cancelar</a>
             </div>
         </form>
     </div>
