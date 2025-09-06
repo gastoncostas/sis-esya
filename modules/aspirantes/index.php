@@ -25,14 +25,14 @@ $params = [];
 $types = '';
 
 if (!empty($search)) {
-    $where = " WHERE dni LIKE ? OR nombre LIKE ? OR apellido LIKE ?";
+    $where = " WHERE c.dni LIKE ? OR c.nombre LIKE ? OR c.apellido LIKE ?";
     $searchParam = "%$search%";
     $params = [$searchParam, $searchParam, $searchParam];
     $types = 'sss';
 }
 
 // Consulta para obtener el total de registros (para paginación)
-$countQuery = "SELECT COUNT(*) as total FROM cursante" . $where;
+$countQuery = "SELECT COUNT(*) as total FROM cursantes c" . $where;
 $countStmt = $conn->prepare($countQuery);
 
 if (!empty($params)) {
@@ -45,8 +45,22 @@ $totalRow = $totalResult->fetch_assoc();
 $totalCursantes = $totalRow['total'];
 $totalPages = ceil($totalCursantes / $limit);
 
-// Consulta principal con paginación
-$query = "SELECT * FROM cursante" . $where . " ORDER BY apellido, nombre LIMIT ? OFFSET ?";
+// Consulta principal con paginación y JOINs
+$query = "SELECT 
+    c.id,
+    c.dni, 
+    c.apellido, 
+    c.nombre,
+    co.codigo as comision,
+    c.estado,
+    d.nombre as departamento_nombre,
+    l.nombre as localidad_nombre
+FROM cursantes c
+LEFT JOIN comisiones co ON c.comision_id = co.id
+LEFT JOIN departamentos d ON c.departamento_id = d.id  
+LEFT JOIN localidades l ON c.localidad_id = l.id" . $where . " 
+ORDER BY c.apellido, c.nombre LIMIT ? OFFSET ?";
+
 $params[] = $limit;
 $params[] = $offset;
 $types .= 'ii';
@@ -119,13 +133,17 @@ $result = $stmt->get_result();
                             <td><?php echo htmlspecialchars($row['apellido']); ?></td>
                             <td><?php echo htmlspecialchars($row['nombre']); ?></td>
                             <td>
-                                <span class="comision-badge">
-                                    <?php echo htmlspecialchars($row['comision']); ?>
-                                </span>
+                                <?php if (!empty($row['comision'])): ?>
+                                    <span class="comision-badge">
+                                        <?php echo htmlspecialchars($row['comision']); ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="text-muted">Sin asignar</span>
+                                <?php endif; ?>
                             </td>
                             <td>
-                                <span class="status-badge status-<?php echo htmlspecialchars($row['estado']); ?>">
-                                    <?php echo htmlspecialchars(ucfirst($row['estado'])); ?>
+                                <span class="status-badge status-<?php echo strtolower(htmlspecialchars($row['estado'])); ?>">
+                                    <?php echo htmlspecialchars(ucfirst(strtolower($row['estado']))); ?>
                                 </span>
                             </td>
                             <td class="actions">
